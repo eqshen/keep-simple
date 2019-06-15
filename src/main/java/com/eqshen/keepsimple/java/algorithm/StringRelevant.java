@@ -7,12 +7,17 @@ package com.eqshen.keepsimple.java.algorithm;
  */
 public class StringRelevant {
     public static void main(String[] args) {
-        System.out.println(longestPalindrome("ababccbcd"));
+        String str = "ababccbcd";
+        String result1 = longestPalindrome(str);
+        String result2 = longestPalindrome2(str);
+        System.out.println(result1);
+        System.out.println(result2);
     }
 
     /**
      * 5
      * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+     * 中心扩散法
      * @param s
      * @return
      * babad
@@ -42,5 +47,41 @@ public class StringRelevant {
             right++;
         }
         return right - left - 1;
+    }
+
+
+    /**
+     * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+     * 线性规划方法，基于暴力方法的一种改良
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome2(String s){
+        int len = s.length();
+        if(len == 0) return s;
+        //记录之前的状态
+        boolean dp[][] = new boolean[len][len];
+        int maxLength = 1;
+        String longestPalindrome = s.substring(0,1); //substring 是左闭右开的
+
+        //j往左跑，i往右跑
+        for (int i = 0; i < len; i++) {
+            for (int j = i; j >=0 ; j--) {
+
+                //状态转移方程，条件
+                // s[i] == s[j]
+                //(i-j<=2 || dp[j+1][i-1]) 是 两种情况的化简
+                //     即(s[i] == s[j] && i-j <= 2) ||  (s[i] == s[j] && i-j > 2 && dp[j+1][i-1])
+                if(s.charAt(i) == s.charAt(j) && (i-j<=2 || dp[j+1][i-1])){
+                    dp[j][i] = true;
+                    if(i - j + 1 > maxLength){
+                        maxLength = i - j + 1;
+                        longestPalindrome = s.substring(j,i+1);
+                    }
+
+                }
+            }
+        }
+        return longestPalindrome;
     }
 }
