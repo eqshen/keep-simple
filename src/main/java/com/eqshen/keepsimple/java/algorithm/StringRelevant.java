@@ -12,6 +12,8 @@ public class StringRelevant {
         String result2 = longestPalindrome2(str);
         System.out.println(result1);
         System.out.println(result2);
+        System.out.println("============================");
+        System.out.println(isPalindrome(0));
     }
 
     /**
@@ -83,5 +85,18 @@ public class StringRelevant {
             }
         }
         return longestPalindrome;
+    }
+
+    public static boolean isPalindrome(int x) {
+        if(x < 0) return false;
+        int oldX = x;
+        int newX = 0;
+        do{
+            int r = x % 10;
+            newX = newX*10 + r;
+            x = x/10;
+        }while(x != 0);
+
+        return oldX == newX;
     }
 }
