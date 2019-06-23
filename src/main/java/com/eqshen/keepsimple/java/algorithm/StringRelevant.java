@@ -12,6 +12,8 @@ public class StringRelevant {
         String result2 = longestPalindrome2(str);
         System.out.println(result1);
         System.out.println(result2);
+
+        System.out.println(isMatch("aabce","a.bce"));
     }
 
     /**
@@ -83,5 +85,27 @@ public class StringRelevant {
             }
         }
         return longestPalindrome;
+    }
+
+    /**
+     * 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+     * '.' 匹配任意单个字符
+     * '*' 匹配零个或多个前面的那一个元素
+     * @param text
+     * @param pattern
+     * @return
+     */
+    public static boolean isMatch(String text, String pattern){
+        if(pattern.length() == 0){
+            return text.length() == 0;
+        }
+        boolean preMatch =text.length()!=0
+                && (text.charAt(0) == pattern.charAt(0) || pattern.charAt(0) == '.');
+        if(pattern.length() >=2 && pattern.charAt(1) == '*'){
+            return isMatch(text,pattern.substring(2)) ||
+                    (preMatch && isMatch(text.substring(1),pattern));
+        }else{
+            return preMatch && isMatch(text.substring(1),pattern.substring(1));
+        }
     }
 }
