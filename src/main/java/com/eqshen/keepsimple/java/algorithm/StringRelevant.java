@@ -14,6 +14,8 @@ public class StringRelevant {
         System.out.println(result2);
 
         System.out.println(isMatch("aabce","a.bce"));
+        System.out.println("============================");
+        System.out.println(isPalindrome(0));
     }
 
     /**
@@ -95,17 +97,29 @@ public class StringRelevant {
      * @param pattern
      * @return
      */
-    public static boolean isMatch(String text, String pattern){
-        if(pattern.length() == 0){
+    public static boolean isMatch(String text, String pattern) {
+        if (pattern.length() == 0) {
             return text.length() == 0;
         }
-        boolean preMatch =text.length()!=0
+        boolean preMatch = text.length() != 0
                 && (text.charAt(0) == pattern.charAt(0) || pattern.charAt(0) == '.');
-        if(pattern.length() >=2 && pattern.charAt(1) == '*'){
-            return isMatch(text,pattern.substring(2)) ||
-                    (preMatch && isMatch(text.substring(1),pattern));
-        }else{
-            return preMatch && isMatch(text.substring(1),pattern.substring(1));
+        if (pattern.length() >= 2 && pattern.charAt(1) == '*') {
+            return isMatch(text, pattern.substring(2)) ||
+                    (preMatch && isMatch(text.substring(1), pattern));
+        } else {
+            return preMatch && isMatch(text.substring(1), pattern.substring(1));
         }
+    }
+    public static boolean isPalindrome(int x) {
+        if(x < 0) return false;
+        int oldX = x;
+        int newX = 0;
+        do{
+            int r = x % 10;
+            newX = newX*10 + r;
+            x = x/10;
+        }while(x != 0);
+
+        return oldX == newX;
     }
 }
