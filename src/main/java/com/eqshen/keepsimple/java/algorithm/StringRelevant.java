@@ -110,6 +110,8 @@ public class StringRelevant {
             return preMatch && isMatch(text.substring(1), pattern.substring(1));
         }
     }
+
+
     public static boolean isPalindrome(int x) {
         if(x < 0) return false;
         int oldX = x;
