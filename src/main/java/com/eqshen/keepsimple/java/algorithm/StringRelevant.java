@@ -16,6 +16,8 @@ public class StringRelevant {
         System.out.println(isMatch("aabce","a.bce"));
         System.out.println("============================");
         System.out.println(isPalindrome(0));
+        System.out.println("============================");
+        System.out.println(intToRoman(1994));
     }
 
     /**
@@ -123,5 +125,78 @@ public class StringRelevant {
         }while(x != 0);
 
         return oldX == newX;
+    }
+
+    public static String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        while(num > 0){
+            while(num<4&& num>0){
+                sb.append("I");
+                num--;
+                continue;
+            }
+
+            if(num/1000 > 0){
+                sb.append("M");
+                num = num - 1000;
+                continue;
+            }
+            if(num/900 >0){
+                sb.append("CM");
+                num = num - 900;
+                continue;
+            }
+            if(num / 500 > 0){
+                sb.append("D");
+                num = num - 500;
+                continue;
+            }
+            if(num/400 >0){
+                sb.append("CD");
+                num = num - 400;
+                continue;
+            }
+            if(num/100 > 0){
+                sb.append("C");
+                num = num - 100;
+                continue;
+            }
+            if(num/90 > 0){
+                sb.append("XC");
+                num = num - 90;
+                continue;
+            }
+            if(num/50 > 0){
+                sb.append("L");
+                num = num - 50;
+                continue;
+            }
+            if(num/40 > 0){
+                sb.append("XL");
+                num = num - 40;
+                continue;
+            }
+            if(num/10 > 0){
+                sb.append("X");
+                num = num - 10;
+                continue;
+            }
+            if(num/9 > 0){
+                sb.append("IX");
+                num = num - 9;
+                continue;
+            }
+            if(num/5 > 0){
+                sb.append("V");
+                num = num - 5;
+                continue;
+            }
+            if(num/4 > 0){
+                sb.append("IV");
+                num = num - 4;
+                continue;
+            }
+        }
+        return sb.toString();
     }
 }
