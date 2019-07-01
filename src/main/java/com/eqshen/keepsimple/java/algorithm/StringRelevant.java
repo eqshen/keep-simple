@@ -1,5 +1,8 @@
 package com.eqshen.keepsimple.java.algorithm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @Auther: eqshen
  * @Description 字符串相关
@@ -18,6 +21,7 @@ public class StringRelevant {
         System.out.println(isPalindrome(0));
         System.out.println("============================");
         System.out.println(intToRoman(1994));
+        System.out.println(romanToInt("MCMXCIV"));
     }
 
     /**
@@ -127,6 +131,11 @@ public class StringRelevant {
         return oldX == newX;
     }
 
+    /**
+     * 12.数字转罗马
+     * @param num
+     * @return
+     */
     public static String intToRoman(int num) {
         StringBuilder sb = new StringBuilder();
         while(num > 0){
@@ -198,5 +207,37 @@ public class StringRelevant {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 13. 罗马数字转整数
+     * @param s
+     * @return
+     */
+    public static int romanToInt(String s) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("I", 1);
+        map.put("IV", 4);
+        map.put("V", 5);
+        map.put("IX", 9);
+        map.put("X", 10);
+        map.put("XL", 40);
+        map.put("L", 50);
+        map.put("XC", 90);
+        map.put("C", 100);
+        map.put("CD", 400);
+        map.put("D", 500);
+        map.put("CM", 900);
+        map.put("M", 1000);
+        int val = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(i < s.length() - 1 && map.containsKey(s.substring(i,i+2))){
+                val+= map.get(s.substring(i,i+2));
+                i++;
+            }else{
+                val+= map.get(s.substring(i,i+1));
+            }
+        }
+        return val;
     }
 }
