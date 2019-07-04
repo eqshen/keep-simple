@@ -1,6 +1,7 @@
 package com.eqshen.keepsimple.java.algorithm;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,11 @@ public class ArrayRevelant {
     public static void main(String[] args) {
         int height[] = {1,8,6,2,5,4,8,3,7};
         System.out.println(maxArea2(height));
+        int nums[] = {-1, 0, 1, 2, -1, -4};
+        List<List<Integer>> resList = threeSum(nums);
+        for (List<Integer> integers : resList) {
+            System.out.println(integers);
+        }
     }
 
     /**
@@ -52,4 +58,40 @@ public class ArrayRevelant {
         return maxArea;
     }
 
+    /**
+     * 15. 给定一个包含 n 个整数的数组 nums，判断 nums 
+     * 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？找出所有满足条件且不重复的三元组。
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/3sum
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> resultList = new ArrayList<>();
+        for (int i = 0; i < nums.length - 2; i++) { //-2是因为右边有双指针扫描
+
+            if(i == 0 || (i >0 && nums[i-1]!= nums[i])){//去重，i-1 和i 相同就跳过了。
+                int left = i+1;
+                int right = nums.length -1;
+                while(left < right){
+                    int res = nums[i] + nums[left] + nums[right];
+                    if(res == 0){
+                        resultList.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                        while(left<right && nums[left] == nums[left+1]) left++;
+                        while(left<right && nums[right] == nums[right-1])right--;
+                        left++;
+                        right--;
+                    }else if(res > 0){
+                        while(left<right && nums[right] == nums[right-1])right--;
+                        right--;
+                    }else{
+                        while(left<right && nums[left] == nums[left+1]) left++;
+                        left++;
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
 }
