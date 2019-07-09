@@ -19,6 +19,9 @@ public class ArrayRevelant {
         for (List<Integer> integers : resList) {
             System.out.println(integers);
         }
+        System.out.println("============================");
+        int nums2[] = {-1,2,1,-4};
+        System.out.println(threeSumClosest(nums2,1));
     }
 
     /**
@@ -93,5 +96,38 @@ public class ArrayRevelant {
             }
         }
         return resultList;
+    }
+
+    /**
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int result = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < nums.length - 2; i++) { //-2是因为右边有双指针扫描
+
+            if(i == 0 || (i >0 && nums[i-1]!= nums[i])){//去重，i-1 和i 相同就跳过了。
+                int left = i+1;
+                int right = nums.length -1;
+                while(left < right){
+                    int res = nums[i] + nums[left] + nums[right];
+                    int disNew = Math.abs(res - target);
+                    int disOld = Math.abs(result - target);
+                    result = disNew < disOld ? res:result;
+                    if(res == target){
+                        return result;
+                    }else if(res > target){
+                        while(left<right && nums[right] == nums[right-1])right--;
+                        right--;
+                    }else{
+                        while(left<right && nums[left] == nums[left+1]) left++;
+                        left++;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
