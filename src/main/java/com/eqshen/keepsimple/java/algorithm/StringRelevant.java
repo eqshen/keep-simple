@@ -1,7 +1,7 @@
 package com.eqshen.keepsimple.java.algorithm;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * @Auther: eqshen
@@ -22,6 +22,8 @@ public class StringRelevant {
         System.out.println("============================");
         System.out.println(intToRoman(1994));
         System.out.println(romanToInt("MCMXCIV"));
+        System.out.println("============================");
+        System.out.println(letterCombinations("2354"));
     }
 
     /**
@@ -239,5 +241,38 @@ public class StringRelevant {
             }
         }
         return val;
+    }
+
+    public static List<String> letterCombinations(String digits) {
+        if(digits == null || digits.equals("")){
+            return new ArrayList<>();
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("2","a b c");
+        map.put("3","d e f");
+        map.put("4","g h i");
+        map.put("5","j k l");
+        map.put("6","m n o");
+        map.put("7","p q r s");
+        map.put("8","t u v");
+        map.put("9","w x y z");
+
+        List list = new ArrayList();
+
+        list.addAll(Arrays.asList(map.get(""+ digits.charAt(0)).split(" ")));
+        for (int i = 1; i < digits.length(); i++) {
+            list = letterCombinationHelp(list,map.get("" + digits.charAt(i)).split(" "));
+        }
+        return list;
+    }
+
+    private static List<String> letterCombinationHelp(List<String> oldList,String[] strs){
+        List<String> newList = new ArrayList<>();
+        for (String s : oldList) {
+            for (String str : strs) {
+                newList.add(s + str);
+            }
+        }
+        return newList;
     }
 }
