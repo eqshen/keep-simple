@@ -1,9 +1,7 @@
 package com.eqshen.keepsimple.java.algorithm;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: eqshen
@@ -15,7 +13,7 @@ public class ArrayRevelant {
         int height[] = {1,8,6,2,5,4,8,3,7};
         System.out.println(maxArea2(height));
         int nums[] = {-1, 0, 1, 2, -1, -4};
-        List<List<Integer>> resList = threeSum(nums);
+        List<List<Integer>> resList = fourSum(nums,2);
         for (List<Integer> integers : resList) {
             System.out.println(integers);
         }
@@ -129,5 +127,41 @@ public class ArrayRevelant {
             }
         }
         return result;
+    }
+
+
+    /**
+     * 给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/4sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        if(nums.length < 4) return new ArrayList<>();
+        Set<List<Integer>> resultSet = new HashSet<>();
+
+        for (int i = 0; i < nums.length -1; i++) {
+            for (int j = i + 1; j < nums.length -1; j++) {
+                int left = j + 1;
+                int right = nums.length - 1;
+                while (left < right){
+                    int res = nums[i] + nums[j] + nums[left] + nums[right];
+                    if(res == target){
+                        resultSet.add(Arrays.asList(nums[i],nums[j],nums[left],nums[right]));
+                        left++;
+                        right--;
+                    }else if( res > target){
+                        right --;
+                    }else{
+                        left ++;
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(resultSet);
     }
 }
