@@ -1,11 +1,13 @@
 package com.eqshen.keepsimple.java.algorithm;
 
+import com.eqshen.keepsimple.java.BaseTest;
+
 /**
  * @Auther: eqshen
  * @Description 二分查找相关
  * @Date: 2019/4/15 13:10
  */
-public class BinarySearchDemo {
+public class BinarySearchDemo extends BaseTest {
     public static void main(String[] args) {
         int array[] = {1,2,5,8,11,11,11,11,67,89};
         System.out.println(binarySearch(array,12));

@@ -1,5 +1,8 @@
 package com.eqshen.keepsimple.java.algorithm;
 
+import com.eqshen.keepsimple.java.BaseTest;
+import org.junit.Test;
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -8,7 +11,7 @@ import java.util.*;
  * @Description 字符串相关
  * @Date: 2019/6/13 13:08
  */
-public class StringRelevant {
+public class StringRelevant extends BaseTest {
     public static void main(String[] args) {
         String str = "ababccbcd";
         String result1 = longestPalindrome(str);
@@ -274,5 +277,51 @@ public class StringRelevant {
             }
         }
         return newList;
+    }
+
+
+    /**
+     * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+     *
+     * 有效字符串需满足：
+     *
+     * 左括号必须用相同类型的右括号闭合。
+     * 左括号必须以正确的顺序闭合。
+     * 注意空字符串可被认为是有效字符串。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/valid-parentheses
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @return
+     */
+    @Test
+    public void isValid() {
+        Map<Character,Character> map = new HashMap<>();
+        map.put(']', '[');
+        map.put('}', '{');
+        map.put(')', '(');
+        Stack<Character> stack = new Stack<>();
+
+
+        String s= "]";
+        boolean valid = true;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if(ch == ' ') continue;
+            if(!map.containsKey(ch)){
+                stack.push(ch);
+            }else{
+                if(stack.empty()){
+                    valid = false;
+                    break;
+                }
+                char tmp = stack.pop();
+                if(map.get(ch) != tmp){
+                    valid = false;
+                    break;
+                }
+            }
+        }
+        System.out.println(valid&&stack.empty());
     }
 }
