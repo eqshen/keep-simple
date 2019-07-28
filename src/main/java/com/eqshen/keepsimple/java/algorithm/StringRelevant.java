@@ -324,4 +324,68 @@ public class StringRelevant extends BaseTest {
         }
         System.out.println(valid&&stack.empty());
     }
+
+    /**
+     *给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。
+     *
+     * 例如，给出 n = 3，生成结果为：
+     *
+     * [
+     *   "((()))",
+     *   "(()())",
+     *   "(())()",
+     *   "()(())",
+     *   "()()()"
+     * ]
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/generate-parentheses
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * 回溯算法基本思想：能进则进，进不了则换，换不了则退
+     *
+     * 括号生成算法类似于二叉树先序遍历
+     * 可用递归生成问题解空间树
+     * 再用剪枝函数来对解空间树进行剪枝
+     * 括号生成:
+     *
+     * 进入左子树条件： (个数 小于 n
+     * 进入右子树条件： ）个数 小于 （ 个数
+     *
+     * 作者：hikes
+     * 链接：https://leetcode-cn.com/problems/two-sum/solution/hui-su-suan-fa-by-hikes/
+     * 来源：力扣（LeetCode）
+     * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     */
+    @Test
+    public void testGenerateParenthesis(){
+        System.out.println(generateParenthesis(3));
+    }
+
+
+
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        backtrack(ans, "", 0,0,n);
+
+        return ans;
+    }
+
+    public  void backtrack(List<String> ans, String cur, int left, int right, int max){
+        if(cur.length() == max * 2){
+            ans.add(cur);
+            System.out.println("====>" + cur);
+            return;
+        }
+        System.out.println(cur);
+        if(left < max){
+            backtrack(ans, cur+"(",  left + 1, right, max);
+        }
+
+        if(right < left){
+            backtrack(ans, cur +")", left, right+1, max);
+        }
+    }
+
+
 }
