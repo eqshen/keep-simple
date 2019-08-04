@@ -6,7 +6,70 @@ import org.junit.Test;
 public class LinkedListRelevant extends BaseTest {
 
     @Test
-    public void testWwapPairs(){
+    public void testMergeKlists(){
+
+        ListNode list1 = new ListNode(1);
+        list1.next = new ListNode(5);
+        list1.next.next = new ListNode(7);
+
+        ListNode list2 = new ListNode(2);
+        list2.next = new ListNode(8);
+
+        ListNode[] lists = {list1,list2};
+
+        ListNode resultList = mergeKLists(lists);
+
+        while (resultList != null){
+            System.out.println(resultList.val);
+            resultList = resultList.next;
+        }
+
+
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode[] heads = new ListNode[lists.length];
+        for (int i = 0; i < lists.length; i++) {
+            heads[i] = lists[i];
+        }
+
+        ListNode movePoint = new ListNode(Integer.MIN_VALUE);
+        ListNode result = movePoint;
+
+        int index = -1;
+        do{
+            index = getMinIndex(heads);
+            if(index == -1){
+                break;
+            }
+            movePoint.next = heads[index];
+            movePoint = movePoint.next;
+            heads[index] = heads[index].next;
+
+        }while (index > -1);
+        return result.next;
+
+    }
+
+    private int getMinIndex(ListNode[] lists){
+        if(lists.length == 0){
+            return -1;
+        }
+        int minNode = -1;
+        for (int i = 0;i < lists.length;i++) {
+            if(lists[i] == null) continue;
+            if(minNode == -1) minNode = i;
+            if(lists[minNode] != null && lists[i].val < lists[minNode].val){
+                minNode = i;
+            }
+        }
+        return minNode;
+    }
+
+
+
+    @Test
+    public void testSwapPairs(){
         ListNode node1 = new ListNode(1);
         ListNode node2 = new ListNode(2);
         ListNode node3 = new ListNode(3);
