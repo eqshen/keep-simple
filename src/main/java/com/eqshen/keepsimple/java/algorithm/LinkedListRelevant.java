@@ -3,6 +3,9 @@ package com.eqshen.keepsimple.java.algorithm;
 import com.eqshen.keepsimple.java.BaseTest;
 import org.junit.Test;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class LinkedListRelevant extends BaseTest {
 
     @Test
@@ -17,7 +20,7 @@ public class LinkedListRelevant extends BaseTest {
 
         ListNode[] lists = {list1,list2};
 
-        ListNode resultList = mergeKLists(lists);
+        ListNode resultList = mergeKListsPlus(lists);
 
         while (resultList != null){
             System.out.println(resultList.val);
@@ -27,6 +30,12 @@ public class LinkedListRelevant extends BaseTest {
 
     }
 
+    /**
+     * 23。https://leetcode-cn.com/problems/merge-k-sorted-lists/
+     * 合并 k 个排序链表，返回合并后的排序链表。
+     * @param lists
+     * @return
+     */
     public ListNode mergeKLists(ListNode[] lists) {
         ListNode[] heads = new ListNode[lists.length];
         for (int i = 0; i < lists.length; i++) {
@@ -48,7 +57,36 @@ public class LinkedListRelevant extends BaseTest {
 
         }while (index > -1);
         return result.next;
+    }
 
+    /**
+     * 合并k个有序链表-改进版
+     * @param lists
+     * @return
+     */
+    public ListNode mergeKListsPlus(ListNode[] lists){
+        if(lists.length == 0) return null;
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<>(lists.length, Comparator.comparingInt(a -> a.val));
+        ListNode resultHead = new ListNode(-1);
+        ListNode curNode = resultHead;
+
+        //入队每个链表第一个节点
+        for (ListNode listNode : lists) {
+            if(listNode != null){
+                priorityQueue.add(listNode);
+            }
+        }
+
+        while (!priorityQueue.isEmpty()){
+            ListNode tmpNode = priorityQueue.poll();
+            curNode.next = tmpNode;
+            curNode = curNode.next;
+            //往后移动一个位置后继续入队
+            if(curNode.next != null){
+                priorityQueue.add(curNode.next);
+            }
+        }
+        return resultHead.next;
     }
 
     private int getMinIndex(ListNode[] lists){
