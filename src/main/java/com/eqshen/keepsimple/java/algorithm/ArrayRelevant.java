@@ -1,6 +1,7 @@
 package com.eqshen.keepsimple.java.algorithm;
 
 import com.eqshen.keepsimple.java.BaseTest;
+import org.junit.Test;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -165,5 +166,62 @@ public class ArrayRelevant extends BaseTest {
             }
         }
         return new ArrayList<>(resultSet);
+    }
+
+
+    /**
+     * 27. 给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。
+     *
+     * 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+     *
+     * 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/remove-element
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     * @param val
+     * @return
+     */
+    public int removeElement(int[] nums, int val) {
+        if(nums.length == 0) return 0;
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right){
+            if(nums[right] == val){
+                right--;
+                continue;
+            }
+
+            if(nums[left] != val){
+                left++;
+                continue;
+            }
+
+            //swap
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+
+            left++;
+            right--;
+        }
+        int resultLen = 0;
+        for (int num : nums) {
+            if(num !=val){
+                resultLen++;
+            }
+        }
+        return resultLen;
+    }
+
+    @Test
+    public void testRemoveElement(){
+        int array[] = {3,2,2,3};
+        System.out.println(removeElement(array,3));
+        for (int item : array) {
+            System.out.print("  " + item);
+        }
     }
 }
