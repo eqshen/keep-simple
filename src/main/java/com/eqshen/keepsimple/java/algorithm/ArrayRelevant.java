@@ -216,10 +216,31 @@ public class ArrayRelevant extends BaseTest {
         return resultLen;
     }
 
+
+    /**
+     * removeElement 升级版
+     * @param nums
+     * @param val
+     * @return
+     */
+    public int removeElementPlus(int[] nums, int val){
+        if(nums.length == 0){
+            return 0;
+        }
+        int move = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] != val){
+                nums[move] = nums[i];
+                move++;
+            }
+        }
+        return move;
+    }
+
     @Test
     public void testRemoveElement(){
         int array[] = {3,2,2,3};
-        System.out.println(removeElement(array,3));
+        System.out.println(removeElementPlus(array,3));
         for (int item : array) {
             System.out.print("  " + item);
         }
