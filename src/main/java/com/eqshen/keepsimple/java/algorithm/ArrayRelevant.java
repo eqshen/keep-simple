@@ -14,7 +14,7 @@ import java.util.*;
 public class ArrayRelevant extends BaseTest {
     public static void main(String[] args) {
         int height[] = {1,8,6,2,5,4,8,3,7};
-        System.out.println(maxArea2(height));
+        System.out.println(maxAreaPlus(height));
         int nums[] = {-1, 0, 1, 2, -1, -4};
         List<List<Integer>> resList = fourSum(nums,2);
         for (List<Integer> integers : resList) {
@@ -46,7 +46,7 @@ public class ArrayRelevant extends BaseTest {
         return maxArea;
     }
 
-    public static int maxArea2(int [] height){
+    public static int maxAreaPlus(int [] height){
         int left = 0;
         int right = height.length -1;
         int maxArea = 0;
