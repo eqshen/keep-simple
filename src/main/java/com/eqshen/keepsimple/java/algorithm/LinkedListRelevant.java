@@ -4,6 +4,7 @@ import com.eqshen.keepsimple.java.BaseTest;
 import org.junit.Test;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class LinkedListRelevant extends BaseTest {
@@ -144,6 +145,91 @@ public class LinkedListRelevant extends BaseTest {
 
         }
         return realHead;
+    }
+
+    /**
+     * 给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+     *
+     * k 是一个正整数，它的值小于或等于链表的长度。
+     *
+     * 如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/reverse-nodes-in-k-group
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+
+        ListNode sourceHead = head;
+        int modCount = 0;
+
+        ListNode sliceHead = head;
+        ListNode sliceTail = head;
+        ListNode lastTail = head;
+
+        ListNode result = null;
+        while (head != null){
+            modCount++;
+            if(modCount %k == 0){
+                //断链
+                ListNode tmpHead = head;
+                head = head.next;
+                tmpHead.next = null;
+
+                //翻转前面半段
+                ListNode tmpResult = reverseNode(sliceHead);
+                //组装
+                if(result == null){
+                    result = tmpResult;
+                }else{
+                    lastTail.next = sliceTail;
+                }
+                lastTail = sliceHead;
+
+
+                sliceHead = head;
+                sliceTail = head;
+            }else{
+                head = head.next;
+                sliceTail=sliceTail.next;
+            }
+        }
+
+        if(modCount < k){
+            return sourceHead;
+        }
+        lastTail.next = sliceHead;
+        return result;
+    }
+
+    public  ListNode reverseNode(ListNode head){
+        ListNode curPoint = head,nextPoint = head,prePoint = null;
+
+        while (nextPoint != null){
+            nextPoint = curPoint.next;
+            curPoint.next = prePoint;
+            prePoint = curPoint;
+            curPoint = nextPoint;
+        }
+        return prePoint;
+    }
+
+    @Test
+    public void testReverse(){
+        ListNode list1 = new ListNode(1);
+//        list1.next = new ListNode(5);
+//        list1.next.next = new ListNode(7);
+//        list1.next.next.next = new ListNode(8);
+//        list1.next.next.next.next = new ListNode(9);
+
+        ListNode result = reverseKGroup(list1,2);
+        while (result != null){
+            System.out.println(result.val);
+            result = result.next;
+        }
     }
 }
 
