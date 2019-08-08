@@ -245,4 +245,65 @@ public class ArrayRelevant extends BaseTest {
             System.out.print("  " + item);
         }
     }
+
+
+    /**
+     * 实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+     *
+     * 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+     *
+     * 必须原地修改，只允许使用额外常数空间。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/next-permutation
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     */
+    public void nextPermutation(int[] nums) {
+
+        if(nums.length<=1){
+            return;
+        }
+        int i = 0;
+        for (i = nums.length-2; i >=0 ; i--) {
+            if(nums[i]< nums[i+1]){
+                break;
+            }
+        }
+
+        int j = nums.length -1;
+        for (j = nums.length-1; i >=0 ; j--){
+            if(nums[j] > nums[i]){
+                break;
+            }
+        }
+        //swap i,j
+        if(i>=0 && j >=0){
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
+
+        //翻转i后面的
+        int m = i+1;
+        int n = nums.length - 1;
+        while(m < n){
+            int tmp2 = nums[n];
+            nums[n] = nums[m];
+            nums[m] = tmp2;
+            m++;
+            n--;
+        }
+
+    }
+
+    @Test
+    public void testNextPermutation(){
+        int nums[] = {2,3,1};
+        nextPermutation(nums);
+        for (int num : nums) {
+            System.out.print(num);
+        }
+        System.out.println();
+    }
 }
