@@ -387,5 +387,60 @@ public class StringRelevant extends BaseTest {
         }
     }
 
+    @Test
+    public void testFindSubString(){
+//        "barfoothefoobarman"
+//                ["foo","bar"]
+        String s = "barfoothefoobarman";
+        String[] words = {"foo","bar"};
+        System.out.println(findSubstring(s,words));
+    }
+
+    /**
+     *给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。
+     *
+     * 注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> resultList = new ArrayList<>();
+        if(words.length == 0){
+            return  resultList;
+        }
+        int wordNum = words.length;
+        int wordLen = words[0].length();
+
+        Map<String,Integer> wordCountMap = new HashMap<>();
+        for (String word : words) {
+            int value = wordCountMap.getOrDefault(word,0);
+            wordCountMap.put(word,1 + value);
+        }
+
+        for (int i = 0; i <s.length() - wordLen*wordNum + 1 ; i++) {
+            HashMap<String,Integer> wordOccurMap = new HashMap<>();
+            int curNum = 0;
+            while (curNum < wordNum){
+                String word = s.substring(i + wordLen* curNum,i + wordLen*(curNum + 1));
+                if(!wordCountMap.containsKey(word)){
+                    break;
+                }
+                wordOccurMap.put(word,1 + wordOccurMap.getOrDefault(word,0));
+                if(wordOccurMap.getOrDefault(word,0) > wordCountMap.get(word)){
+                    break;
+                }
+                curNum++;
+            }
+            if(curNum == wordNum){
+                resultList.add(i);
+            }
+        }
+        return resultList;
+    }
 
 }
