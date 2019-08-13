@@ -443,4 +443,54 @@ public class StringRelevant extends BaseTest {
         return resultList;
     }
 
+
+    /**
+     * 32
+     * https://leetcode-cn.com/problems/longest-valid-parentheses/
+     * 给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+     * @param s
+     * @return
+     */
+    public int longestValidParentheses(String s) {
+        char[] chars = s.toCharArray();
+        if(s.length() == 0) return 0;
+
+        int left = 0;
+        int right = 0;
+        int maxLen = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i] == '('){
+                left++;
+            }else{
+                right++;
+            }
+            if(left == right){
+                maxLen = Math.max(maxLen,left*2);
+            }else if(right > left){
+                left = right = 0;
+            }
+        }
+        left= right = 0;
+
+        for (int i = chars.length-1; i >=0; i--) {
+            if(chars[i] == ')'){
+                right++;
+            }else{
+                left++;
+            }
+            if(left == right){
+                maxLen = Math.max(maxLen,left*2);
+            }else if(right < left){
+                left = right = 0;
+            }
+        }
+        return maxLen;
+    }
+
+    @Test
+    public void testLongestValidParentheses(){
+        String s = ")()())";
+        System.out.println(longestValidParentheses(s));
+    }
+
 }
