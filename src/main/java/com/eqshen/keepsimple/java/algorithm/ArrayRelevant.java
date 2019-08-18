@@ -452,4 +452,100 @@ public class ArrayRelevant extends BaseTest {
         int target = 6;
         System.out.println(searchInsert(nums,target));
     }
+
+    @Test
+    public void testSolveSudoKu(){
+        char [][]board = {
+                {'5','3','.','.','7','.','.','.','.'},
+                {'6','.','.','1','9','5','.','.','.'},
+                {'.','9','8','.','.','.','.','6','.'},
+                {'8','.','.','.','6','.','.','.','3'},
+                {'4','.','.','8','.','3','.','.','1'},
+                {'7','.','.','.','2','.','.','.','6'},
+                {'.','6','.','.','.','.','2','8','.'},
+                {'.','.','.','4','1','9','.','.','5'},
+                {'.','.','.','.','8','.','.','7','9'}
+        };
+        solveSudoku(board);
+    }
+
+    /**
+     * 37
+     * 编写一个程序，通过已填充的空格来解决数独问题。
+     *
+     * 一个数独的解法需遵循如下规则：
+     *
+     * 数字 1-9 在每一行只能出现一次。
+     * 数字 1-9 在每一列只能出现一次。
+     * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+     * 空白格用 '.' 表示。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/sudoku-solver
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param board
+     */
+    public void solveSudoku(char[][] board){
+        boolean rowUsed[][] = new boolean[9][10]; //[x][0]不使用
+        boolean colUsed[][] = new boolean[9][10];
+        boolean boxUsed[][][] = new boolean[3][3][10];// 3*3个盒子
+        //初始化目前已经被填好的位置
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                //i,j位置对应的数字，char转int
+                if('.' != board[i][j]){
+                    int num = board[i][j] - '0';
+                    rowUsed[i][num] = true;
+                    colUsed[j][num] = true;
+                    boxUsed[i/3][j/3][num] = true;
+                }
+            }
+
+        }
+        //从头开始尝试，开干
+        recusiveSolveSudoku(board,rowUsed,colUsed,boxUsed,0,0);
+    }
+
+
+    private boolean recusiveSolveSudoku(char[][]board, boolean[][]rowUsed, boolean[][]colUsed, boolean[][][]boxUsed, int row, int col){
+        if(col == board[0].length){
+            col = 0;
+            row ++;
+            if(row == board.length){
+                return true;
+            }
+        }
+
+        if('.' == board[row][col]){
+            //尝试填充数字1-9
+            for (int i = 1; i <= 9 ; i++) {
+                boolean canBeUsed = !rowUsed[row][i] && !colUsed[col][i] && !boxUsed[row/3][col/3][i];
+                if(canBeUsed){
+                    //标记
+                    rowUsed[row][i] = true;
+                    colUsed[col][i] = true;
+                    boxUsed[row/3][col/3][i] = true;
+
+                    board[row][col] = (char)('0' + i);
+                    //递归判断下一个位置
+                    if(recusiveSolveSudoku(board,rowUsed,colUsed,boxUsed,row,col + 1)){
+                        return true;
+                    }
+                    //如果下个位置不符合条件，那就回溯咯
+                    rowUsed[row][i] = false;
+                    colUsed[col][i] = false;
+                    boxUsed[row/3][col/3][i] = false;
+
+                    board[row][col] = '.';
+                }
+
+            }
+        }else{
+            return recusiveSolveSudoku(board,rowUsed,colUsed,boxUsed,row,col + 1);
+        }
+        return false;
+
+    }
+
+
 }
