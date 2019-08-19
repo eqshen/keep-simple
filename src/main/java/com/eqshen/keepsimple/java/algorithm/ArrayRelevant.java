@@ -544,8 +544,46 @@ public class ArrayRelevant extends BaseTest {
             return recusiveSolveSudoku(board,rowUsed,colUsed,boxUsed,row,col + 1);
         }
         return false;
-
     }
 
+    @Test
+    public void testCombinationSum(){
+        int []candidates = {2,3,6,7};
+        int target = 7;
+        List<List<Integer>> result = combinationSum(candidates,target);
+        System.out.println(result);
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> combinationResult = new ArrayList<>();
+        if(candidates.length == 0){
+            return combinationResult;
+        }
+        Arrays.sort(candidates);
+        recusiveCombinationSum(combinationResult,candidates,target,0,new Stack<>());
+        return combinationResult;
+    }
+
+    /**
+     * @param combinationResult  最终结果集
+     * @param candidates 数组
+     * @param curTarget 当前的目标值
+     * @param start
+     * @param chain
+     */
+    private void recusiveCombinationSum(List<List<Integer>> combinationResult,int[] candidates,int curTarget, int start,Stack<Integer> chain){
+        if( curTarget == 0){
+            combinationResult.add(new ArrayList<>(chain));
+        }
+
+        for (int i = start; i < candidates.length; i++) {
+            if(curTarget - candidates[i] >=0){
+                chain.add(candidates[i]);
+                recusiveCombinationSum(combinationResult,candidates,curTarget - candidates[i],i,chain);
+                //回溯
+                chain.pop();
+            }
+        }
+    }
 
 }
