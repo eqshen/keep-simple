@@ -552,8 +552,32 @@ public class ArrayRelevant extends BaseTest {
         int target = 7;
         List<List<Integer>> result = combinationSum(candidates,target);
         System.out.println(result);
+
+
+        int []candidates2 = {10,1,2,7,6,1,5};
+        int target2 = 8;
+        List<List<Integer>> result2 = combinationSum2(candidates2,target2);
+        System.out.println(result2);
     }
 
+    /**
+     * 39
+     * 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *
+     * candidates 中的数字可以无限制重复被选取。
+     *
+     * 说明：
+     *
+     * 所有数字（包括 target）都是正整数。
+     * 解集不能包含重复的组合。 
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/combination-sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param candidates
+     * @param target
+     * @return
+     */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> combinationResult = new ArrayList<>();
         if(candidates.length == 0){
@@ -575,11 +599,57 @@ public class ArrayRelevant extends BaseTest {
         if( curTarget == 0){
             combinationResult.add(new ArrayList<>(chain));
         }
-
         for (int i = start; i < candidates.length; i++) {
             if(curTarget - candidates[i] >=0){
                 chain.add(candidates[i]);
                 recusiveCombinationSum(combinationResult,candidates,curTarget - candidates[i],i,chain);
+                //回溯
+                chain.pop();
+            }
+        }
+    }
+
+
+    /**
+     * 40
+     * 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+     *
+     * candidates 中的每个数字在每个组合中只能使用一次。
+     *
+     * 说明：
+     *
+     * 所有数字（包括目标数）都是正整数。
+     * 解集不能包含重复的组合。 
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/combination-sum-ii
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> combinationResult = new ArrayList<>();
+        if(candidates.length == 0){
+            return combinationResult;
+        }
+        Arrays.sort(candidates);
+        recusiveCombinationSum2(combinationResult,candidates,target,0,new Stack<>());
+        return combinationResult;
+    }
+
+    private void recusiveCombinationSum2(List<List<Integer>> combinationResult,int[] candidates,int curTarget, int start,Stack<Integer> chain){
+        if( curTarget == 0){
+            combinationResult.add(new ArrayList<>(chain));
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if(curTarget - candidates[i] >=0 ){
+                //去重
+                if(i>start && candidates[i-1] == candidates[i]){
+                    continue;
+                }
+                chain.add(candidates[i]);
+                recusiveCombinationSum2(combinationResult,candidates,curTarget - candidates[i],i + 1,chain);//i+1 同一元素不可重复使用
                 //回溯
                 chain.pop();
             }
