@@ -779,4 +779,45 @@ public class ArrayRelevant extends BaseTest {
         System.out.println(trap2(height));
     }
 
+
+    /**
+     * 43
+     * 给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public String multiply(String num1, String num2) {
+        if("0".equals(num1) || "0".equals(num2)){
+            return "0";
+        }
+        int len = num1.length() + num2.length();
+        int resultArray[] = new int[len];
+        for (int i = num1.length() - 1; i >=0 ; i--) {
+            for (int j = num2.length() - 1; j >= 0 ; j--) {
+                //为什么是i+j+1 ，max(i+j+1)刚好是resultArray的最右边一位
+                resultArray[i+j+ 1] = (num1.charAt(i)-'0')*(num2.charAt(j)-'0');
+                //进位处理
+                if(resultArray[i+j+1] >= 10){
+                    int tmp = resultArray[i+j+1];
+                    resultArray[i+j+1] = tmp % 10;
+                    resultArray[i+j] = tmp/10;
+                }
+            }
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            if(resultArray[i] == 0){
+                continue;
+            }else{
+                result.append(resultArray[i]);
+            }
+        }
+        return result.toString();
+    }
+
+    @Test
+    public void testMultiply(){
+        System.out.println(multiply("123","456" ));
+    }
 }
