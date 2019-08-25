@@ -795,29 +795,33 @@ public class ArrayRelevant extends BaseTest {
         int resultArray[] = new int[len];
         for (int i = num1.length() - 1; i >=0 ; i--) {
             for (int j = num2.length() - 1; j >= 0 ; j--) {
-                //为什么是i+j+1 ，max(i+j+1)刚好是resultArray的最右边一位
-                resultArray[i+j+ 1] = (num1.charAt(i)-'0')*(num2.charAt(j)-'0');
+                int n1 = (num1.charAt(i)-48);
+                int n2 = (num2.charAt(j)-48);
+
+                resultArray[i+j+1] += n1* n2;
                 //进位处理
                 if(resultArray[i+j+1] >= 10){
-                    int tmp = resultArray[i+j+1];
-                    resultArray[i+j+1] = tmp % 10;
-                    resultArray[i+j] = tmp/10;
+                    resultArray[i+j] +=resultArray[i+j+1]/10;
+                    resultArray[i+j+1] = resultArray[i+j+1] % 10;
                 }
             }
         }
         StringBuilder result = new StringBuilder();
+        boolean flag = false;
         for (int i = 0; i < len; i++) {
-            if(resultArray[i] == 0){
+            if(resultArray[i] == 0 && !flag){
                 continue;
             }else{
                 result.append(resultArray[i]);
+                flag = true;
             }
+
         }
         return result.toString();
     }
 
     @Test
     public void testMultiply(){
-        System.out.println(multiply("123","456" ));
+        System.out.println(multiply("10","456" ));
     }
 }
