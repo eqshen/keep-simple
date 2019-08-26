@@ -824,4 +824,46 @@ public class ArrayRelevant extends BaseTest {
     public void testMultiply(){
         System.out.println(multiply("10","456" ));
     }
+
+    @Test
+    public void testPermute(){
+        int[]nums = {1,2,3};
+        List<List<Integer>> result = permute(nums);
+        for (List<Integer> integers : result) {
+            System.out.println(integers);
+        }
+    }
+
+    /**
+     * 46
+     * 给定一个没有重复数字的序列，返回其所有可能的全排列。
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> resultList = new ArrayList<>();
+        int []used = new int[nums.length];
+        doPermute(nums,used,new ArrayList<>(),resultList);
+        return resultList;
+    }
+
+    private void doPermute(int nums[],int used[],List<Integer> singleResult,List<List<Integer>> resultList){
+
+        if(singleResult.size() == nums.length){
+            resultList.add(new ArrayList<>(singleResult));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if(used[i] == 1){
+                continue;
+            }
+            singleResult.add(nums[i]);
+            used[i] = 1;
+            doPermute(nums,used,singleResult,resultList);
+            used[i] = 0;
+            singleResult.remove(singleResult.size()-1);
+        }
+    }
+
 }
