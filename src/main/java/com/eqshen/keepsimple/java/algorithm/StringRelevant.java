@@ -509,39 +509,47 @@ public class StringRelevant extends BaseTest {
      * @return
      */
     boolean isMatch2(String str, String pattern) {
-        int s = 0, p = 0, match = 0, starIdx = -1;
+        //字符串游动指针
+        int sIndex = 0 ;
+        //pattern游动指针
+        int pIndex= 0;
+        //上一个*号匹配字符串的长度
+        int matchIndex = 0;
+        //上一个*号的位置
+        int starIndex = -1;
+
         //遍历整个字符串
-        while (s < str.length()){
-            // 一对一匹配，两指针同时后移。
-            if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
-                s++;
-                p++;
-            }
-            // 碰到 *，假设它匹配空串，并且用 startIdx 记录 * 的位置，记录当前字符串的位置，p 后移
-            else if (p < pattern.length() && pattern.charAt(p) == '*'){
-                starIdx = p;
-                match = s;
-                p++;
-            }
-            // 当前字符不匹配，并且也没有 *，回退
-            // p 回到 * 的下一个位置
-            // match 更新到下一个位置
-            // s 回到更新后的 match
-            // 这步代表用 * 匹配了一个字符
-            else if (starIdx != -1){
-                p = starIdx + 1;
-                match++;
-                s = match;
-            }
-            //字符不匹配，也没有 *，返回 false
-            else return false;
+        while (sIndex < str.length()){
+           char s = str.charAt(sIndex);
+           char p = pattern.charAt(pIndex);
+
+           if(pIndex < pattern.length() && (p=='?'|| p == s)){
+               pIndex++;
+               sIndex++;
+           }else if(pIndex<pattern.length() && p == '*'){
+               //出现*
+               //记录*位置
+               starIndex = pIndex;
+               //*匹配长度，从0开始
+               matchIndex = sIndex;
+               //pattern下一位置
+               pIndex++;
+           }else if(starIndex != -1){
+               //如果从 starIndex位置开始匹配到此处，发现难以继续匹配下去
+               //需要进行回退
+               //字符串指针指向上一次匹配的下个位置，即增加一个*匹配长度
+               sIndex = ++matchIndex;
+               pIndex = starIndex+1;
+           }else{
+               return false;
+           }
         }
 
         //将末尾多余的 * 直接匹配空串 例如 text = ab, pattern = a*******
-        while (p < pattern.length() && pattern.charAt(p) == '*')
-            p++;
+        while (pIndex < pattern.length() && pattern.charAt(pIndex) == '*')
+            pIndex++;
 
-        return p == pattern.length();
+        return pIndex == pattern.length();
     }
 
     @Test
