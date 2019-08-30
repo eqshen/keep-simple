@@ -552,6 +552,51 @@ public class StringRelevant extends BaseTest {
         return pIndex == pattern.length();
     }
 
+    /**
+     * 44
+     * 给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 '?' 和 '*' 的通配符匹配。
+     *
+     * '?' 可以匹配任何单个字符。
+     * '*' 可以匹配任意字符串（包括空字符串）。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/wildcard-matching
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param str
+     * @param pattern
+     * @return
+     */
+    public boolean isMatchDp(String str, String pattern){
+        if(str == null || pattern == null){
+            return false;
+        }
+        int sLen = str.length();
+        int pLen = pattern.length();
+        boolean [][]dp = new boolean[sLen + 1][pLen + 1];
+
+        //初始化
+        dp[0][0] = true;
+        for (int j = 1; j <=pLen; j++) {
+            if(pattern.charAt(j-1) == '*'){
+                dp[0][j] = dp[0][j-1];
+            }
+        }
+
+        for (int i = 1; i <=sLen; i++) {
+            for (int j = 1; j <=pLen; j++) {
+                char sc = str.charAt(i-1);
+                char pc = pattern.charAt(j-1);
+                if(sc == pc || pc == '?'){
+                    dp[i][j] = dp[i-1][j-1];
+                }else if(pc == '*'){
+                    dp[i][j] = dp[i][j-1] || dp[i-1][j] ;//*不匹配字符，或匹配1个字符
+                }
+            }
+        }
+        return dp[sLen][pLen];
+
+    }
+
     @Test
     public void testIsMatch2(){
         System.out.println(isMatch2("aaeerereb","a*eb*****"));
