@@ -601,4 +601,22 @@ public class StringRelevant extends BaseTest {
     public void testIsMatch2(){
         System.out.println(isMatch2("aaeerereb","a*eb*****"));
     }
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String,List<String>> dictMap = new HashMap<>();
+        for (String str : strs) {
+            char[] charArray = str.toCharArray();
+            Arrays.sort(charArray);
+            String key = new String(charArray);
+            List<String> list = dictMap.getOrDefault(key,new ArrayList<>());
+            list.add(str);
+            dictMap.put(key,list);
+        }
+        return new ArrayList<>(dictMap.values());
+    }
+
+    @Test
+    public void testGroupAnagrams(){
+        System.out.println(groupAnagrams(new String[]{}));
+    }
 }
