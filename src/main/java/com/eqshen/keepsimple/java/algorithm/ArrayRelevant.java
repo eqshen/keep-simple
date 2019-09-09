@@ -901,4 +901,63 @@ public class ArrayRelevant extends BaseTest {
         }
     }
 
+
+    /**
+     * n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     * @param n
+     * @return
+     */
+    public List<List<String>> solveNQueens(int n) {
+        int[] result = new int [n];
+        List<List<String>> results = new ArrayList<>();
+        backpackSolveNQueens(results,result,0, n);
+        return results;
+    }
+
+    /**
+     * 51
+     * @param results
+     * @param rowQueues 第n行棋子是在第result[n]列
+     * @param row
+     * @param n 皇后总数
+     */
+    private void backpackSolveNQueens(List<List<String>> results,int[] rowQueues,int row,int n){
+        if(row == n){
+            List<String> one = new ArrayList<>();
+            for (int i = 0; i < rowQueues.length; i++){
+                // 一行一个StringBuilder
+                StringBuilder str = new StringBuilder();
+                for (int column = 0; column < rowQueues.length; column++){
+                    if (column == rowQueues[i]){
+                        str.append("Q");
+                    }else{
+                        str.append(".");
+                    }
+                }
+                one.add(str.toString());
+            }
+            results.add(one);
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            //判断当前列是否符合条件
+            boolean isOk = true;
+            for (int i = 0; i < row; i++) {
+                //不在同列，当前选择的位置row行，col列，已经被i行用过
+                //不在同一个主对角线上，主对角线 / ,特征 横纵坐标之和相同
+                //不在同一副对角线上，副对角线 \  ,特征 横纵坐标只差相同
+                if(col == rowQueues[i] || col + row == rowQueues[i]  + i || col - row == rowQueues[i] - i){
+                    isOk = false;
+                    break;
+                }
+            }
+            if(isOk){
+                rowQueues[row] = col;//
+                //递归进入下一行判断
+                backpackSolveNQueens(results,rowQueues,row+1,n);
+            }
+        }
+    }
+
 }

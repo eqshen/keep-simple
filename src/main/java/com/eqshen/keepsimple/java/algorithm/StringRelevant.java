@@ -601,4 +601,28 @@ public class StringRelevant extends BaseTest {
     public void testIsMatch2(){
         System.out.println(isMatch2("aaeerereb","a*eb*****"));
     }
+
+    /**
+     * 49
+     * 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String,List<String>> dictMap = new HashMap<>();
+        for (String str : strs) {
+            char[] charArray = str.toCharArray();
+            Arrays.sort(charArray);
+            String key = new String(charArray);
+            List<String> list = dictMap.getOrDefault(key,new ArrayList<>());
+            list.add(str);
+            dictMap.put(key,list);
+        }
+        return new ArrayList<>(dictMap.values());
+    }
+
+    @Test
+    public void testGroupAnagrams(){
+        System.out.println(groupAnagrams(new String[]{}));
+    }
 }
