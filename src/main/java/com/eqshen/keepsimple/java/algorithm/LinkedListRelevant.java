@@ -231,6 +231,8 @@ public class LinkedListRelevant extends BaseTest {
             result = result.next;
         }
     }
+
+
 }
 
 
