@@ -960,4 +960,82 @@ public class ArrayRelevant extends BaseTest {
         }
     }
 
+    @Test
+    public void testSpiralOrder(){
+        /*/int [][]array = {
+                {1,2,3,4,5,6},
+                {20,21,22,23,24,7},
+                {19,32,33,34,25,8},
+                {18,31,36,35,26,9},
+                {17,30,29,28,27,10},
+                {16,15,14,13,12,11},
+        };*/
+        int array[][]={{2,3,4},{5,6,7},{8,9,10},{11,12,13},{14,15,16}};
+        System.out.println(spiralOrder(array));
+    }
+
+    /**
+     * 54
+     * 给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        int row = matrix.length;
+        if (row == 0) {
+            return result;
+        }
+        int column = matrix[0].length;
+
+        int size = row * column;
+        //当前已经前进的步数
+        int currentPosition = 0;
+        //当前走到的行index
+        int currentRow = 0;
+        //当前走到的列index
+        int currentColumn = 0;
+        //当前走的圈数，right，down，left，up同时为0说明一圈已经走完，round++
+        int round = 0;
+
+        int right = column - 1 - round * 2;
+        int down = row - 1 - round * 2;
+        int left = column - 1 - round * 2;
+        int up = row - 2 - round * 2;
+
+        while (currentPosition < size) {
+            result.add(matrix[currentRow][currentColumn]);
+            //向右前进步数未完，继续向右前进
+            if (right > 0) {
+                currentColumn++;
+                right--;
+            } else if (down > 0) {
+                //向下前进步数未完，继续向下前进
+                currentRow++;
+                down--;
+            } else if (left > 0) {
+                //向左前进步数未完，继续向左前进
+                currentColumn--;
+                left--;
+            } else if (up > 0) {
+                //向上前进步数未完，继续向上前进
+                currentRow--;
+                up--;
+                if (up == 0) {
+                    //right，down，left，up同时为0,一圈已经走完，round++,并重置下一圈四个方向要走的步数
+                    round++;
+                    right = column - round * 2;
+                    down = row - 1 - round * 2;
+                    left = column - 1 - round * 2;
+                    up = row - 2 - round * 2;
+                }
+            }
+            currentPosition++;
+        }
+        return result;
+
+    }
+
+
+
 }
