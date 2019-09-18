@@ -1033,9 +1033,62 @@ public class ArrayRelevant extends BaseTest {
             currentPosition++;
         }
         return result;
-
     }
 
 
+    /**
+     * 45
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     *
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     *
+     * 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+     *
+     * 思路：从第一个位置开始遍历，计算当前位置所能到达的范围内实际价值最大的那步
+     *  如 [2,1,1,3,4]
+     *  当前位置 0  则 最大步数 2 ，能选择的位置为 [1,1],但他们的实际价值是  [2,3]  (相对于当前位置0，产生的距离价值)
+     *
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums) {
+        int cur = 0;
+        int jumpCount = 0;
+        if(nums.length <= 1){
+            return 0;
+        }
+        while (cur < nums.length){
+            int maxStep = nums[cur];
+            if(maxStep >= nums.length - 1 - cur && maxStep !=0){
+                return ++jumpCount;
+            }
+            if(maxStep == 0){
+                return 0;
+            }
+            int steps[] = new int[maxStep+1];//0位置不用
+            for (int i = 1; i <= maxStep ; i++) {
+               steps[i] =nums[cur+i]==0?0:i + nums[cur+i];
+            }
+            int maxV = steps[1];
+            int newCur = cur + 1;
+            for (int i = 1; i < steps.length; i++) {
+                if(steps[i] > maxV ){
+                    maxV = steps[i];
+                    newCur = cur + i;
+                }
+            }
+            if(cur != newCur){
+                jumpCount++;
+                cur = newCur;
+            }
+        }
+        return jumpCount;
+    }
+
+    @Test
+    public void testJump(){
+        int nums[] = {0};
+        System.out.println(jump(nums));
+    }
 
 }
