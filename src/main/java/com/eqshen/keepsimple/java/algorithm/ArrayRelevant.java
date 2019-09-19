@@ -1091,4 +1091,38 @@ public class ArrayRelevant extends BaseTest {
         System.out.println(jump(nums));
     }
 
+    /**
+     * 55
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     *
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     *
+     * 判断你是否能够到达最后一个位置。
+     * @param nums
+     * @return true or false
+     */
+    public boolean canJump(int[] nums) {
+        //贪心算法
+        if(nums.length <= 1){
+            return true;
+        }
+        int maxPosition = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if(nums[i] == 0 && maxPosition <= i){
+                return false;
+            }
+            maxPosition = Math.max(maxPosition,i +  nums[i]);
+            if(maxPosition >= nums.length - 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Test
+    public void testCanJump(){
+        int nums[] = {3,2,1,0,4};
+        System.out.println(canJump(nums));
+    }
+
 }
