@@ -1190,4 +1190,85 @@ public class ArrayRelevant extends BaseTest {
             System.out.println();
         }
     }
+
+    /**
+     * 57
+     * 给出一个无重叠的 ，按照区间起始端点排序的区间列表。
+     *
+     * 在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+     * @param intervals
+     * @param newInterval
+     * @return
+     */
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        int n = intervals.length;
+        List<int[]> res = new LinkedList<>();
+        if(n == 0 || intervals[0].length == 0){
+            if(newInterval.length == 0){
+                return intervals;
+            }
+            if(newInterval.length >0){
+                res.add(newInterval);
+            }
+            return res.toArray(new int[0][0]);
+        }
+        if(newInterval.length == 0){
+            return intervals;
+        }
+
+        int start = newInterval[0];
+        int end = newInterval[1];
+
+
+        int tmpStart = intervals[0][0];
+        int tmpEnd = intervals[0][1];
+        boolean flag = false;
+        boolean everFlag = false;
+        for (int[] interval : intervals) {
+            if(interval[1] < start || interval[0] > end){
+                if(flag){
+                    res.add(new int[]{tmpStart,tmpEnd});
+                    flag = false;
+                }
+                res.add(interval);
+            }else{
+                //有重合部分
+                if(!flag){
+                   tmpStart = interval[0];
+                    tmpEnd = interval[1];
+                }
+                tmpStart = Math.min(tmpStart,start);
+                tmpStart = Math.min(tmpStart,interval[0]);
+                tmpEnd = Math.max(tmpEnd,end);
+                tmpEnd = Math.max(tmpEnd,interval[1]);
+                flag = true;
+                everFlag = true;
+            }
+        }
+        if(flag){
+            res.add(new int[]{tmpStart,tmpEnd});
+        }
+        if(!everFlag){
+            int index = 0;
+            for (int[] re : res) {
+                if(re[0] < newInterval[0]){
+                    index++;
+                }
+            }
+            res.add(index,newInterval);
+        }
+        return res.toArray(new int[0][0]);
+    }
+
+    @Test
+    public void testInsert(){
+        int[][] intervals = new int[][]{{1,3},{6,9}};
+        int[] newInterval = new int[]{2,5};
+        for (int[] ints : insert(intervals,newInterval)) {
+            for (int anInt : ints) {
+                System.out.print(anInt+",");
+            }
+            System.out.println();
+        }
+    }
 }
