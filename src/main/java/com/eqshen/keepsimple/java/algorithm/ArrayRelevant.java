@@ -1271,4 +1271,40 @@ public class ArrayRelevant extends BaseTest {
             System.out.println();
         }
     }
+
+    /**
+     * 59
+     * 给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵
+     * 输入: 3
+     * 输出:
+     * [
+     *  [ 1, 2, 3 ],
+     *  [ 8, 9, 4 ],
+     *  [ 7, 6, 5 ]
+     * ]
+     * @param n
+     * @return
+     */
+    public int[][] generateMatrix(int n) {
+        int matrix[][] = new int[n][n];
+
+        int left = 0,right = n - 1;
+        int num = 1;
+        while(left <= right){
+            // 最中间的一个
+            if(left==right) matrix[left][right] = num++;
+            // 最上面一行 除去最后一个
+            for(int i=left;i<right;i++) matrix[left][i] = num++;
+            // 最右边一列 除去最后一个
+            for(int i=left;i<right;i++) matrix[i][right] = num++;
+            // 最下面一行 除去最后一个（逆序）
+            for(int i=right;i>left;i--) matrix[right][i] = num++;
+            // 最左边一列 除去最后一个（逆序）
+            for(int i=right;i>left;i--) matrix[i][left] = num++;
+            // 一圈遍历结束 遍历下一圈
+            left++;
+            right--;
+        }
+        return matrix;
+    }
 }
