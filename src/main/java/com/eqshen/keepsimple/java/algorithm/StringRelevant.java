@@ -648,4 +648,37 @@ public class StringRelevant extends BaseTest {
         sb.append(ca == 1?ca:"");
         return sb.reverse().toString();
     }
+
+
+    /**
+     * 58
+     * 给定一个仅包含大小写字母和空格 ' ' 的字符串，返回其最后一个单词的长度。
+     * 如果不存在最后一个单词，请返回 0 。
+     * @param s
+     * @return
+     */
+    public int lengthOfLastWord(String s) {
+        if(s == null || s.equals("") ){
+            return 0;
+        }
+        int len = s.length();
+        int count = 0;
+        for (int i = len - 1; i >=0 ; i--) {
+            char ch = s.charAt(i);
+            if(ch == ' '){
+                if(count > 0){
+                    return count;
+                }
+                continue;
+            }
+            count++;
+        }
+        return count;
+    }
+
+    @Test
+    public void testLengthOfLastWord(){
+        String s = "a    tom ";
+        System.out.println(lengthOfLastWord(s));
+    }
 }
