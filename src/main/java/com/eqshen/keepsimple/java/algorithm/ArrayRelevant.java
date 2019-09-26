@@ -1307,4 +1307,71 @@ public class ArrayRelevant extends BaseTest {
         }
         return matrix;
     }
+
+    /**
+     * 60
+     * 给出集合 [1,2,3,…,n]，其所有元素共有 n! 种排列。
+     *
+     * 按大小顺序列出所有排列情况，并一一标记，当 n = 3 时, 所有排列如下：
+     *
+     * "123"
+     * "132"
+     * "213"
+     * "231"
+     * "312"
+     * "321"
+     * 给定 n 和 k，返回第 k 个排列。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/permutation-sequence
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param n
+     * @param k
+     * @return
+     */
+    public String getPermutation(int n, int k) {
+        boolean []used = new boolean[n];
+        int nums[] = new int[n];
+        for (int i = 0; i < n; i++) {
+            used[i] = false;
+            nums[i] = i+1;
+        }
+        List<Integer> pre = new ArrayList<>();
+        return permutationHelper(used,nums,n,k,0,pre);
+    }
+
+    private String permutationHelper(boolean[]used,int []nums,int n,int k,int depth,List<Integer> pre){
+        if(depth == n){
+            StringBuilder resBuilder = new StringBuilder();
+            for (Integer integer : pre) {
+                resBuilder.append(integer);
+            }
+            return resBuilder.toString();
+        }
+        //求阶乘
+        int leafs = factorial(n - 1 - depth);
+        for (int i = 0; i < n; i++) {
+            if (used[i]) {
+                continue;
+            }
+            //减枝
+            if (leafs < k) {
+                k -= leafs;
+                continue;
+            }
+            pre.add(nums[i]);
+            used[i] = true;
+            return permutationHelper( used,nums, n, k, depth + 1, pre);
+        }
+        return null;
+    }
+
+    private int factorial(int n) {
+        int res = 1;
+        while (n > 0) {
+            res *= n;
+            n -= 1;
+        }
+        return res;
+    }
 }
