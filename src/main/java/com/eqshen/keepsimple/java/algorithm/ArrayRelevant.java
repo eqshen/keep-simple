@@ -1348,7 +1348,7 @@ public class ArrayRelevant extends BaseTest {
             }
             return resBuilder.toString();
         }
-        //求阶乘
+        //求阶乘，计算选定当前层后能产生的叶子节点数
         int leafs = factorial(n - 1 - depth);
         for (int i = 0; i < n; i++) {
             if (used[i]) {

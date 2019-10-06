@@ -233,6 +233,57 @@ public class LinkedListRelevant extends BaseTest {
     }
 
 
+    /**
+     * 61
+     * 给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null){
+            return head;
+        }
+        int len = 0;
+        ListNode cur = head;
+        ListNode tail = null;
+        while (cur != null){
+            len++;
+            if(cur.next == null){
+                tail = cur;
+            }
+            cur = cur.next;
+        }
+        k = k % len;
+        if(k == 0){
+            return head;
+        }
+
+        //寻找倒数第k个结点（正数len-k+1个），并将其作为首结点
+        ListNode oldHead = head;
+        for (int i = 0; i <len-k -1 ; i++) {
+            head = head.next;
+        }
+        ListNode newHead = head.next;
+        head.next = null;
+        tail.next = oldHead;
+        return newHead;
+    }
+
+    @Test
+    public void testRotateRight(){
+        ListNode list1 = new ListNode(1);
+        list1.next = new ListNode(5);
+        list1.next.next = new ListNode(7);
+        list1.next.next.next = new ListNode(8);
+//        list1.next.next.next.next = new ListNode(9);
+        ListNode result = rotateRight(list1,2);
+        while (result != null){
+            System.out.println(result.val);
+            result = result.next;
+        }
+    }
+
 }
 
 
