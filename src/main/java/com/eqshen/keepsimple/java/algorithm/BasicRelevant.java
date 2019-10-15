@@ -157,4 +157,64 @@ public class BasicRelevant extends BaseTest {
         return grid[rows-1][cols-1];
     }
 
+    /**
+     * 72
+     * 给定两个单词 word1 和 word2，计算出将 word1 转换成 word2 所使用的最少操作数 。
+     *
+     * 你可以对一个单词进行如下三种操作：
+     *
+     * 插入一个字符
+     * 删除一个字符
+     * 替换一个字符
+     * @param word1
+     * @param word2
+     * @return
+     */
+    public int minDistance(String word1, String word2){
+        //线性规划解法
+        int n1 = word1.length();
+        int n2 = word2.length();
+        //dp[i][j]表示word1的前i个字符转换成word2的前j个字符，所需要的 步数（编辑距离）
+        //其中 word2是不变的（模板）
+        //为了理解方便，0号位置不用
+        int dp[][] = new int[n1 + 1][n2 + 1];
+
+        //第一行
+        for (int j = 1; j <= n2; j++) {
+            dp[0][j] = dp[0][j-1] + 1;
+        }
+        //第一列
+        for (int i = 1; i <= n1 ; i++) {
+            dp[i][0] = dp[i-1][0] + 1;
+        }
+
+        //
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2 ; j++) {
+                if(word1.charAt(i-1) == word2.charAt(j-1)){
+                    //如果 i,j两个位置的字符串相等，则编辑距离同 i-1到j-1
+                    dp[i][j] = dp[i-1][j-1] ;
+                }else{
+                    //如果i,j两个位置字符不等，则需要从 删除、增加、替换 中选取一个
+                    //总编辑距离最小的进行操作
+                    //其中 dp[i-1][j] 表示 删除 （如何理解见补充）
+                    //其中 dp[i][j-1] 表示 插入 （如何理解见补充）
+                    //其中 dp[i-1][j-1] 表示  替换
+
+                    /**
+                     * 补充
+                     * 因为题意要求从word1到word2，word是可变的，word2是不可变的。dp[i-1][j] 表示当前word1[i]与word2[j]是不匹配的，那我去找下word1[i-1]与word2[j]匹配的情况，如果该情况下最小，那就删除当前的word1[i]。dp[i][j-1]表示我去看看word1[i]与word2[j-1]的匹配情况，如果匹配的结果是最小的，那就增加一个word1[i+1] == word2[j]就行了。
+                     */
+
+                    dp[i][j] = Math.min(Math.min(dp[i-1][j],dp[i][j-1]),dp[i-1][j-1]) + 1;
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+
+    @Test
+    public void testMinDistance(){
+        System.out.println(minDistance("abcd","bcdef"));
+    }
 }
