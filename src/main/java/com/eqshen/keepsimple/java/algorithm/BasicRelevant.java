@@ -4,6 +4,8 @@ import com.eqshen.keepsimple.java.BaseTest;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Auther: eqshen
@@ -216,5 +218,66 @@ public class BasicRelevant extends BaseTest {
     @Test
     public void testMinDistance(){
         System.out.println(minDistance("abcd","bcdef"));
+    }
+
+    @Test
+    public void testMinWindow(){
+        System.out.println(minWindow("ADOBECODEBANC","BANC"));
+    }
+
+    /**
+     * 76
+     * 给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。
+     * @param s
+     * @param t
+     * @return
+     */
+    public String minWindow(String s, String t) {
+        //当前各个字母的个数，初始为0
+        Map<Character,Integer> curCount = new HashMap<>();
+        //目标计数值
+        Map<Character,Integer> targetCount = new HashMap<>();
+
+        for (char c : t.toCharArray()) {
+            int count = targetCount.getOrDefault(c,0);
+            targetCount.put(c,count+1);
+        }
+
+        int left = 0;
+        int right = 0;
+        while(right < s.length()){
+            if(!hasContain(curCount,targetCount)){
+                int count = curCount.getOrDefault(s.charAt(right),0);
+                curCount.put(s.charAt(right),count + 1);
+            }else{
+                break;
+            }
+            right++;
+        }
+
+        while (left < right){
+            char ch = t.charAt(left);
+            if(hasContain(curCount,targetCount)){
+                int count = curCount.getOrDefault(ch,0);
+                if(count > 0){
+                    curCount.put(ch,count - 1);
+                }else break;
+            }else{
+                break;
+            }
+            left++;
+        }
+        return s.substring(left-1,right);
+    }
+
+    private boolean hasContain(Map<Character,Integer> curCount,Map<Character,Integer> targetCount){
+        if(curCount.size() < targetCount.size()) return false;
+        for (Map.Entry<Character, Integer> entry : targetCount.entrySet()) {
+            int cur = curCount.getOrDefault(entry.getKey(),0);
+            if(cur < entry.getValue()){
+                return false;
+            }
+        }
+        return true;
     }
 }
