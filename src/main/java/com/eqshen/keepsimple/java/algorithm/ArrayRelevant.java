@@ -1400,10 +1400,37 @@ public class ArrayRelevant extends BaseTest {
         return result;
     }
 
+    /**
+     * 递归解法
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets2(int[] nums){
+        List<List<Integer>> result = new ArrayList<>();
+        if(nums.length == 0){
+            return result;
+        }
+        result.add(new ArrayList<>());
+        subsets2Help(nums,0,result);
+        return result;
+    }
+
+    private void subsets2Help(int []nums,int i,List<List<Integer>> result){
+        if(i >= nums.length) return;
+        int size = result.size();
+        for (int j= 0;j < size;j++) {
+            List<Integer> tmp = new ArrayList<>(result.get(j));
+            tmp.add(nums[i]);
+            result.add(tmp);
+        }
+        subsets2Help(nums,i+1,result);
+    }
+
+
     @Test
     public void testSubsets(){
         int []nums = {1,2,3};
-        List<List<Integer>> result = subsets(nums);
+        List<List<Integer>> result = subsets2(nums);
 
         for (List<Integer> integers : result) {
             System.out.println(integers);
