@@ -222,7 +222,7 @@ public class BasicRelevant extends BaseTest {
 
     @Test
     public void testMinWindow(){
-        System.out.println(minWindow("ADOBECODEBANC","BANC"));
+        System.out.println(minWindow("ask_not_what_your_country_can_do_for_you_ask_what_you_can_do_for_your_country","ask_country"));
     }
 
     /**
@@ -245,29 +245,29 @@ public class BasicRelevant extends BaseTest {
 
         int left = 0;
         int right = 0;
+        String res = "";
         while(right < s.length()){
-            if(!hasContain(curCount,targetCount)){
-                int count = curCount.getOrDefault(s.charAt(right),0);
-                curCount.put(s.charAt(right),count + 1);
-            }else{
-                break;
-            }
+            //window add
+            int count = curCount.getOrDefault(s.charAt(right),0);
+            curCount.put(s.charAt(right),count + 1);
             right++;
-        }
 
-        while (left < right){
-            char ch = t.charAt(left);
-            if(hasContain(curCount,targetCount)){
-                int count = curCount.getOrDefault(ch,0);
-                if(count > 0){
-                    curCount.put(ch,count - 1);
-                }else break;
-            }else{
-                break;
+            while(hasContain(curCount,targetCount)&& left<=right){
+                // 如果这个窗口的子串更短，则更新 res
+                if(calcMapDeepSize(curCount) < res.length() || res.equals("")){
+                    res = s.substring(left,right);
+                }
+                //remove left
+                char lch = s.charAt(left);
+                if(curCount.getOrDefault(lch,0) > 1){
+                    curCount.put(lch,curCount.get(lch) -1);
+                }else{
+                    curCount.remove(lch);
+                }
+                left++;
             }
-            left++;
         }
-        return s.substring(left-1,right);
+        return res;
     }
 
     private boolean hasContain(Map<Character,Integer> curCount,Map<Character,Integer> targetCount){
@@ -279,5 +279,14 @@ public class BasicRelevant extends BaseTest {
             }
         }
         return true;
+    }
+
+    private int calcMapDeepSize(Map<Character,Integer> map){
+        if(map == null || map.size() == 0) return 0;
+        int res = 0;
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            res += entry.getValue();
+        }
+        return res;
     }
 }
