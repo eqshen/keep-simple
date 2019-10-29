@@ -1436,4 +1436,22 @@ public class ArrayRelevant extends BaseTest {
             System.out.println(integers);
         }
     }
+
+    public boolean exist(char[][] board, String word) {
+        int rowLen = board.length;
+        int colLen = board[0].length;
+        for (int i = 0; i < rowLen; i++) {
+            for (int j = 0; j < colLen; j++) {
+                if(dfsForExist(board,word,0)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfsForExist(char[][]board,String word,int index){
+        if()
+    }
+
 }
