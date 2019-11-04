@@ -1437,12 +1437,32 @@ public class ArrayRelevant extends BaseTest {
         }
     }
 
+    @Test
+    public void testExist(){
+        char [][] board = {{'A','B'}};
+        System.out.println(exist(board,"BA"));
+
+    }
+
+    /**
+     * 79
+     * 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+     *
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/word-search
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param board
+     * @param word
+     * @return
+     */
     public boolean exist(char[][] board, String word) {
         int rowLen = board.length;
         int colLen = board[0].length;
         for (int i = 0; i < rowLen; i++) {
             for (int j = 0; j < colLen; j++) {
-                if(dfsForExist(board,word,0)){
+                if(dfsForExist(board,i,j,word,0)){
                     return true;
                 }
             }
@@ -1450,8 +1470,30 @@ public class ArrayRelevant extends BaseTest {
         return false;
     }
 
-    private boolean dfsForExist(char[][]board,String word,int index){
-        if()
+    private boolean dfsForExist(char[][]board,int i,int j,String word,int index){
+        //越界检查
+        if(i < 0 || i >= board.length || j < 0 || j >= board[0].length){
+            return false;
+        }
+
+        if(board[i][j] != word.charAt(index)){
+            return false;
+        }
+
+        if(index >=word.length() - 1){
+            return true;
+        }
+
+        //four direction 上下求索
+         board[i][j] = '*';
+        if(dfsForExist(board,i-1,j,word,index+1)
+                || dfsForExist(board,i+1,j,word,index+1)
+                || dfsForExist(board,i,j+1,word,index+1)
+                || dfsForExist(board,i,j-1,word,index+1)){
+            return true;
+        }
+        board[i][j] = word.charAt(index);//回溯咯
+        return false;
     }
 
 }
