@@ -1496,4 +1496,35 @@ public class ArrayRelevant extends BaseTest {
         return false;
     }
 
+    @Test
+    public void testLargestRectangleArea(){
+        int heights[] = {2,1,5,6,2,3};
+        System.out.println(largestRectangleArea(heights));
+    }
+
+    /**
+     * 84
+     * 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+     *
+     * 求在该柱状图中，能够勾勒出来的矩形的最大面积。
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea(int[] heights) {
+        return maxArea(heights,0,heights.length-1);
+    }
+
+    private int maxArea(int[] heights,int start,int end){
+        if(start > end){
+            return 0;
+        }
+        int minIndex = start;
+        for (int i = start; i <= end; i++) {
+            if(heights[minIndex] > heights[i] ){
+                minIndex = i;
+            }
+        }
+        return Math.max(heights[minIndex]*(end - start + 1),Math.max(maxArea(heights,start,minIndex -1),maxArea(heights,minIndex+1,end)));
+    }
+
 }
