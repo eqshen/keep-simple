@@ -1375,6 +1375,159 @@ public class ArrayRelevant extends BaseTest {
         return res;
     }
 
+    /**
+     * 78
+     * 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+     * [1,2,3]
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(nums.length == 0){
+            return result;
+        }
+        result.add(new ArrayList<>());
+        //逐个枚举，空集的幂集只有空集，每增加一个元素，让之前幂集中的每个集合，追加这个元素，就是新增的子集。
+        for (int num : nums) {
+            int size = result.size();
+            for (int i = 0; i < size; i++) {
+                List<Integer> tmpSet = new ArrayList<>(result.get(i));//这里一定要new 拷贝一份
+                tmpSet.add(num);
+                result.add(tmpSet);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 递归解法
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets2(int[] nums){
+        List<List<Integer>> result = new ArrayList<>();
+        if(nums.length == 0){
+            return result;
+        }
+        result.add(new ArrayList<>());
+        subsets2Help(nums,0,result);
+        return result;
+    }
+
+    private void subsets2Help(int []nums,int i,List<List<Integer>> result){
+        if(i >= nums.length) return;
+        int size = result.size();
+        for (int j= 0;j < size;j++) {
+            List<Integer> tmp = new ArrayList<>(result.get(j));
+            tmp.add(nums[i]);
+            result.add(tmp);
+        }
+        subsets2Help(nums,i+1,result);
+    }
+
+
+    @Test
+    public void testSubsets(){
+        int []nums = {1,2,3};
+        List<List<Integer>> result = subsets2(nums);
+
+        for (List<Integer> integers : result) {
+            System.out.println(integers);
+        }
+    }
+
+    @Test
+    public void testExist(){
+        char [][] board = {{'A','B'}};
+        System.out.println(exist(board,"BA"));
+
+    }
+
+    /**
+     * 79
+     * 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+     *
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/word-search
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param board
+     * @param word
+     * @return
+     */
+    public boolean exist(char[][] board, String word) {
+        int rowLen = board.length;
+        int colLen = board[0].length;
+        for (int i = 0; i < rowLen; i++) {
+            for (int j = 0; j < colLen; j++) {
+                if(dfsForExist(board,i,j,word,0)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfsForExist(char[][]board,int i,int j,String word,int index){
+        //越界检查
+        if(i < 0 || i >= board.length || j < 0 || j >= board[0].length){
+            return false;
+        }
+
+        if(board[i][j] != word.charAt(index)){
+            return false;
+        }
+
+        if(index >=word.length() - 1){
+            return true;
+        }
+
+        //four direction 上下求索
+         board[i][j] = '*';
+        if(dfsForExist(board,i-1,j,word,index+1)
+                || dfsForExist(board,i+1,j,word,index+1)
+                || dfsForExist(board,i,j+1,word,index+1)
+                || dfsForExist(board,i,j-1,word,index+1)){
+            return true;
+        }
+        board[i][j] = word.charAt(index);//回溯咯
+        return false;
+    }
+
+    @Test
+    public void testLargestRectangleArea(){
+        int heights[] = {2,1,5,6,2,3};
+        System.out.println(largestRectangleArea(heights));
+    }
+
+    /**
+     * 84
+     * 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+     *
+     * 求在该柱状图中，能够勾勒出来的矩形的最大面积。
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea(int[] heights) {
+        return maxArea(heights,0,heights.length-1);
+    }
+
+    private int maxArea(int[] heights,int start,int end){
+        if(start > end){
+            return 0;
+        }
+        int minIndex = start;
+        for (int i = start; i <= end; i++) {
+            if(heights[minIndex] > heights[i] ){
+                minIndex = i;
+            }
+        }
+        return Math.max(heights[minIndex]*(end - start + 1),Math.max(maxArea(heights,start,minIndex -1),maxArea(heights,minIndex+1,end)));
+    }
+
+
 
     @Test
     public void testMiniumTotal(){
