@@ -1536,7 +1536,7 @@ public class ArrayRelevant extends BaseTest {
         triangle.add(Arrays.asList(3,4));
         triangle.add(Arrays.asList(6,5,7));
         triangle.add(Arrays.asList(4,1,8,3));
-        System.out.println(minimumTotal(triangle));
+        System.out.println(minimumTotalPlus(triangle));
     }
 
     /**
@@ -1561,8 +1561,15 @@ public class ArrayRelevant extends BaseTest {
     }
 
     public int minimumTotalPlus(List<List<Integer>> triangle) {
-        Integer[][]mem = new Integer[triangle.size()][triangle.size()];
-        return helper(0,0, triangle,mem);
+        int n = triangle.size();
+        int[][]mem = new int[n+1][n+1];
+        for (int i = n - 1; i >= 0 ; i--) {
+            for (int j = 0; j <= i; j++) {
+                mem[i][j] = Math.min(mem[i+1][j],mem[i+1][j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return mem[0][0];
+        
     }
 
 
