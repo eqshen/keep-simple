@@ -1527,4 +1527,38 @@ public class ArrayRelevant extends BaseTest {
         return Math.max(heights[minIndex]*(end - start + 1),Math.max(maxArea(heights,start,minIndex -1),maxArea(heights,minIndex+1,end)));
     }
 
+    /**
+     * 300 给定一个无序的整数数组，找到其中最长上升子序列的长度。
+     *  dp解法
+     * @param nums
+     * @return
+     */
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0){
+            return 0;
+        }
+        //dp[i] 含义： 以第i个元素结尾的序列其最长上升子序列的长度
+        // dp[i] = Max(dp[0],dp[1],...,dp[i-1])+ 1
+        int dp[] = new int[nums.length];
+        //每个元素本身就一个长度为1的子序列
+        Arrays.fill(dp,1);
+        //
+        int maxLen = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                //如果nums[j] < nums[i]，那么nums[j]可能成为num[i]为终点的最长子序列的一部分
+                if(nums[j] < nums[i]){
+                    dp[i] = Math.max(dp[j] + 1,dp[i]);
+                }
+            }
+            maxLen = Math.max(maxLen,dp[i]);
+        }
+        return maxLen;
+    }
+
+    @Test
+    public void testLenthOfLIS(){
+        int nums[] = {10,9,2,5,3,7,101,18};
+        System.out.println(lengthOfLIS(nums));
+    }
 }
