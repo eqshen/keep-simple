@@ -1527,6 +1527,52 @@ public class ArrayRelevant extends BaseTest {
         return Math.max(heights[minIndex]*(end - start + 1),Math.max(maxArea(heights,start,minIndex -1),maxArea(heights,minIndex+1,end)));
     }
 
+
+
+    @Test
+    public void testMiniumTotal(){
+        List<List<Integer>> triangle = new ArrayList<>();
+        triangle.add(Arrays.asList(2));
+        triangle.add(Arrays.asList(3,4));
+        triangle.add(Arrays.asList(6,5,7));
+        triangle.add(Arrays.asList(4,1,8,3));
+        System.out.println(minimumTotalPlus(triangle));
+    }
+
+    /**
+     * 120 给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。
+     */
+    public int minimumTotal(List<List<Integer>> triangle) {
+        Integer[][]mem = new Integer[triangle.size()][triangle.size()];
+        return helper(0,0, triangle,mem);
+    }
+
+    private int helper(int r,int c,List<List<Integer>> triangle,Integer [][] mem){
+        if(mem[r][c] != null){
+            return mem[r][c];
+        }
+        if(r == triangle.size() - 1){
+            return triangle.get(r).get(c);
+        }
+        int left = helper(r+1,c,triangle,mem);
+        int right = helper(r+1,c+1,triangle,mem);
+        mem[r][c] = Math.min(left,right) + triangle.get(r).get(c);
+        return mem[r][c];
+    }
+
+    public int minimumTotalPlus(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[][]mem = new int[n+1][n+1];
+        for (int i = n - 1; i >= 0 ; i--) {
+            for (int j = 0; j <= i; j++) {
+                mem[i][j] = Math.min(mem[i+1][j],mem[i+1][j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return mem[0][0];
+
+    }
+
+
     /**
      * 300 给定一个无序的整数数组，找到其中最长上升子序列的长度。
      *  dp解法
