@@ -289,4 +289,60 @@ public class BasicRelevant extends BaseTest {
         }
         return res;
     }
+
+    @Test
+    public void testIsinterLeave(){
+        String s1 = "aabcc";
+        String s2 = "dbbca";
+        String s3 = "aadbbbaccc";
+        System.out.println(isInterleave(s1,s2,s3));
+    }
+
+
+    /**
+     * 97
+     * 给定三个字符串 s1, s2, s3, 验证 s3 是否是由 s1 和 s2 交错组成的。
+     * dfs递归的方式，太低效，无法ac
+     * @param s1
+     * @param s2
+     * @param s3
+     * @return
+     */
+    public boolean isInterleave(String s1, String s2, String s3){
+        if(s1.length() + s2.length() != s3.length()){
+            return false;
+        }
+        return recurcive(s1,s2,s3,0,0,0);
+    }
+
+    private  boolean recurcive(String s1, String s2, String s3,int index1,int index2,int index3){
+        System.out.println(index1 + "," + index2 + "," + index3);
+        if(index3 >= s3.length()){
+            return true;
+        }
+
+        char ch3 = s3.charAt(index3);
+
+
+//        if(ch1 != ch3 && ch2 != ch3){
+//            return false;
+//        }
+
+        boolean result1 = false;
+        boolean result2 = false;
+        if(index1 < s1.length()){
+            char ch1 = s1.charAt(index1);
+            if(ch1 == ch3){
+                result1 = recurcive(s1,s2,s3,index1+1,index2,index3+1);
+            }
+        }
+        if(index2 < s2.length()){
+            char ch2 = s2.charAt(index2);
+            if(ch2 == ch3){
+                result2 = recurcive(s1,s2,s3,index1,index2+1,index3+1);
+            }
+        }
+        return result1 || result2;
+
+    }
 }
