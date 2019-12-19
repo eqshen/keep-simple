@@ -1607,4 +1607,71 @@ public class ArrayRelevant extends BaseTest {
         int nums[] = {10,9,2,5,3,7,101,18};
         System.out.println(lengthOfLIS(nums));
     }
+
+    /**
+     * 85
+     * 暴力解法
+     * 给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+     * @param matrix
+     * @return
+     */
+    public int maximalRectangle(char[][] matrix) {
+
+        int row = matrix.length;
+        if(row == 0) return 0;
+        int col = matrix[0].length;
+
+        int help[][] = new int[row][col];
+
+        for (int i = 0; i < row; i++) {
+            Arrays.fill(help[i],0);
+            for (int j = 0; j < col; j++) {
+                if(matrix[i][j] == '1'){
+                    if(j> 0){
+                        help[i][j] = help[i][j-1] + 1;
+                    }else{
+                        help[i][j] = 1;
+                    }
+                }
+            }
+        }
+        int result = 0;
+        for (int i = 0; i < row; i++) {
+
+            for (int j = 0; j < col; j++) {
+                int curRow = i;
+                int height = 0;
+                int width = help[i][j];
+
+                while(curRow >=0 && help[curRow][j] > 0){
+                    height++;
+                    width = Math.min(width,help[curRow][j]);
+                    curRow--;
+                    result = Math.max(result,height * width);
+                }
+//                System.ouut.println("i="+i+",j="+j+" = "+ height * width);
+//                if(curRow < 0) break;
+            }
+        }
+        return result;
+
+    }
+
+    @Test
+    public void testMaximalRectangle(){
+        char[][] matrix =
+                       {{'0','1','1','0','1'},
+                        {'1','1','0','1','0'},
+                        {'0','1','1','1','0'},
+                        {'1','1','1','1','0'},
+                        {'1','1','1','1','1'},
+                        {'0','0','0','0','0'}};
+
+        //              matrix  {
+//                {'1','0','1','0','0'},
+//                {'1','0','1','1','1'},
+//                {'1','1','1','1','1'},
+//                {'1','0','0','1','0'}};
+        System.out.println(maximalRectangle(matrix));
+    }
 }
