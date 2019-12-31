@@ -1674,4 +1674,25 @@ public class ArrayRelevant extends BaseTest {
 //                {'1','0','0','1','0'}};
         System.out.println(maximalRectangle(matrix));
     }
+
+    public void rotateString(char[] str, int offset) {
+        // write your code here
+        int n = str.length;
+        offset %=n;
+        for (int i = 0; i < offset; i++) {
+            char endChar = str[n-1];
+            for (int j = n-1; j >0; j--) {
+                str[j] = str[j-1];
+            }
+            str[0] = endChar;
+        }
+
+    }
+
+    @Test
+    public void testRotate(){
+        char[] chars = new char[]{'a','b','c','d','e'};
+        rotateString(chars,3);
+        System.out.println(chars);
+    }
 }
