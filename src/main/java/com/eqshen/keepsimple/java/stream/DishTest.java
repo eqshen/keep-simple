@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DishTest extends BaseTest {
 
@@ -32,6 +33,9 @@ public class DishTest extends BaseTest {
                 .collect(Collectors.toList());
         System.out.println(menuName);
         menuName.forEach(System.out::println);
+
+        int allCalories = menu.stream().collect(Collectors.summingInt(Dish::getCalories));
+        System.out.println("allCalories:" + allCalories);
 
     }
 
@@ -69,7 +73,16 @@ public class DishTest extends BaseTest {
     public void testStreamConvert(){
         List<Integer> list = Arrays.asList(1,2,3,5,4,9,7,8);
         list.stream().mapToInt(Integer::intValue).sorted().forEach(System.out::print);
-        System.out.println();
+        System.out.println("============");
+
+        Stream.iterate(new int[]{0,1},(int []arr)->{return new int[]{arr[1],arr[0]+ arr[1]};})
+                .limit(20).forEach(t->{
+            System.out.println(t[0]+"," + t[1]);
+        });
+
+        System.out.println("==================2");
+        int sum = list.stream().collect(Collectors.reducing(0,Integer::intValue,(a,b)-> a+b));
+        System.out.println(sum);
     }
 
 }
