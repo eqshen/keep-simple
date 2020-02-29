@@ -1,7 +1,6 @@
 package com.eqshen.keepsimple.java.basic;
 
 import lombok.extern.slf4j.Slf4j;
-import sun.misc.GC;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -135,6 +135,30 @@ public class SortRelevant {
         return j;
     }
 
+    /**
+     * 75
+     * @param nums
+     */
+    public void sortColors(int[] nums) {
+        int zero = -1;
+        int two = nums.length;
+        int one = 0;
+
+
+        while (one < two){
+            if(nums[one] == 0){
+                swap(nums,one++,++zero);
+            }else if(nums[one] == 2){
+                swap(nums,--two,one);
+            }else{
+                one++;
+            }
+        }
+
+    }
+
+
+    //====================
 
     private void swap(int[] nums, int index1, int index2) {
         int temp = nums[index1];

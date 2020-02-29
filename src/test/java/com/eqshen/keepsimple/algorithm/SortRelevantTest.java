@@ -4,6 +4,8 @@ import com.eqshen.keepsimple.BaseTest;
 import com.eqshen.keepsimple.java.algorithm.SortRelevant;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * @Auther: eqshen
  * @Description
@@ -16,5 +18,13 @@ public class SortRelevantTest extends BaseTest {
         SortRelevant sortRelevant = new SortRelevant();
         String result = sortRelevant.frequencySort(str);
         System.out.println(result);
+    }
+
+    @Test
+    public void testSortColors(){
+        int[] nums = {1,2,0};
+        SortRelevant sortRelevant = new SortRelevant();
+        sortRelevant.sortColors(nums);
+        Arrays.stream(nums).forEach(System.out::println);
     }
 }
