@@ -14,11 +14,11 @@ public class WaitWakeUpDemo extends BaseTest {
 
     private ReentrantLock reentrantLock = new ReentrantLock();
 
-    private Condition condition1 = reentrantLock.newCondition();
+    private Condition work1Condition = reentrantLock.newCondition();
 
-    private Condition condition2 = reentrantLock.newCondition();
+    private Condition work2Condition = reentrantLock.newCondition();
 
-    private Condition condition3 = reentrantLock.newCondition();
+    private Condition bossCondition3 = reentrantLock.newCondition();
 
     @Test
     public void testNotify() throws InterruptedException {
@@ -74,15 +74,15 @@ public class WaitWakeUpDemo extends BaseTest {
             log.info("线程 {} 好累😫，开始偷懒",Thread.currentThread().getName());
             try {
                 if(Thread.currentThread().getName().equals("打工仔1")){
-                    condition1.await();
+                    work1Condition.await();
                 }else if(Thread.currentThread().getName().equals("打工仔2")){
-                    condition2.await();
+                    work2Condition.await();
                 }
             } catch (InterruptedException e) {
                 log.info("中断异常",e);
             }
             log.info("线程 {} 继续干活，并且加班奋斗",Thread.currentThread().getName());
-            condition3.signalAll();
+            bossCondition3.signalAll();//干完活，汇报给老板
             reentrantLock.unlock();
             log.info("线程 {} 释放锁，下班了~",Thread.currentThread().getName());
         };
@@ -96,13 +96,13 @@ public class WaitWakeUpDemo extends BaseTest {
                 log.info("线程 {} 发现资源空闲了，进来看看 - 获取到锁",Thread.currentThread().getName());
                 log.info("线程 {} 发现工人都在偷懒，怒吼一声：起来修福报！",Thread.currentThread().getName());
                 log.info("线程 {} 大喊：打工仔1 你先给我把xxxx处理了",Thread.currentThread().getName());
-                condition1.signalAll();
+                work1Condition.signalAll();
                 Thread.sleep(2000);
 
                 log.info("线程 {} 大喊：打工仔2 你再给我把ooooo处理了",Thread.currentThread().getName());
-                condition2.signalAll();
+                work2Condition.signalAll();
                 log.info("线程 {} 开始监工 -_-",Thread.currentThread().getName());
-                condition3.await();
+                bossCondition3.await();
                 log.info("线程 {} 满意的下班了",Thread.currentThread().getName());
                 reentrantLock.unlock();
             } catch (InterruptedException e) {
