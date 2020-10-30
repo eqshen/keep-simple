@@ -113,6 +113,8 @@ public class SimpleTest {
 
         fastSortHelp(nums,left,start-1);
         fastSortHelp(nums,start+1,right);
+
+
     }
 
     /**

@@ -49,6 +49,13 @@
             <artifactId>spring-test</artifactId>
             <version>5.1.6.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.eqshen</groupId>
+            <artifactId>eqlog-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>

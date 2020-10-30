@@ -5,11 +5,13 @@ import java.util.Map;
 
 public class LRUCache {
     private Map<Integer,Integer> map;
+    private int capacity;
     public LRUCache(int capacity) {
-        map = new LinkedHashMap(){
+        this.capacity = capacity;
+        map = new LinkedHashMap(capacity,0.75f,true){
             @Override
             protected boolean removeEldestEntry(Map.Entry eldest) {
-                return size()>capacity;
+                return size() > capacity;
             }
         };
     }
