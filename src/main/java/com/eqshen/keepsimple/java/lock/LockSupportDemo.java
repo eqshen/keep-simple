@@ -5,6 +5,11 @@ import java.util.concurrent.locks.LockSupport;
 
 public class LockSupportDemo {
 
+    /**
+     * LockSupport的park与unpark的学习使用
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         test1();
         test2();
