@@ -4,39 +4,39 @@ import lombok.SneakyThrows;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Solution {
-    public static void main(String[] args) throws InterruptedException {
-        Object list = new ArrayList<>(Arrays.asList("1","2","3","4","5","6"));
-        System.out.println(list instanceof List);
-        HashMap<String,String> map = new HashMap<>();
-        map.put("name","111");
 
-        ConcurrentHashMap<String,String> cmap = new ConcurrentHashMap<>();
-        cmap.put("end","111");
-        cmap.get("end");
+    private static volatile int age = 1;
 
+    public static void main(String[] args) {
 
-        Thread thread = new Thread(new Runnable() {
-            @SneakyThrows
-            @Override
-            public void run() {
-                int count = 0;
-                while (true) {
-                    System.out.println(count);
-                    Thread.sleep(500);
-                    if (++count > 10) {
-                        Thread.yield();
-                    }
-                    System.out.println(System.currentTimeMillis());
-                }
-            }
-        });
-        thread.start();
-        thread.join();
-        System.out.println("-------");
-        System.out.println("end");
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
+        lock.unlock();
+
+        //=====
+        int[] array = {1,2,4,6,6,6,7,8};
+        System.out.println(bsLeft(array,6));
     }
 
-
+    public static int bsLeft(int[] array,int target){
+        int left = 0;
+        int right = array.length-1;
+        //[left,right]
+        while (left < right){
+            int mid = left + (right - left)/2;
+            if(array[mid] < target){
+                left = mid + 1;
+            }else if(array[mid] > target){
+                right = mid - 1;
+            } else {
+                //继续收缩右侧
+                right = mid;
+            }
+        }
+        //结束条件： left = right
+        return array[left] == target?left:-1;
+    }
 }

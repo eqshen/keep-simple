@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -14,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 生产者消费者模式
  */
 @Slf4j
-public class ConsumerAndProducerPattern<T> {
+public class ConsumeAndProducePatternV2<T> {
     private LinkedList<T> list = new LinkedList<>();
 
     private ReentrantLock lock = new ReentrantLock();
@@ -30,7 +29,7 @@ public class ConsumerAndProducerPattern<T> {
 
     private int currentCount;
 
-    public ConsumerAndProducerPattern(int containerLimit){
+    public ConsumeAndProducePatternV2(int containerLimit){
         this.containerLimit = containerLimit;
         this.currentCount = 0;
     }
@@ -88,7 +87,7 @@ public class ConsumerAndProducerPattern<T> {
 
     @SneakyThrows
     public static void main(String[] args) {
-        ConsumerAndProducerPattern<String> cpp = new ConsumerAndProducerPattern<>(6);
+        ConsumeAndProducePatternV2<String> cpp = new ConsumeAndProducePatternV2<>(6);
 
         Runnable consumer = ()->{
             while (true){

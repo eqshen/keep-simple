@@ -1,13 +1,15 @@
 package com.eqshen.keepsimple.java.lock;
 
 import com.eqshen.keepsimple.java.BaseTest;
+import lombok.SneakyThrows;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CountdownLatchDemo extends BaseTest {
+public class AQSRelevantDemo extends BaseTest {
 
     @Test
     public void testCountdown() throws InterruptedException {
@@ -103,4 +105,42 @@ public class CountdownLatchDemo extends BaseTest {
 
     }
 
+
+    @SneakyThrows
+    @Test
+    public void testCyclicBar(){
+        Semaphore semaphore = new Semaphore(1);
+
+        Thread t1 = new Thread(new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                while (true) {
+                    Thread.sleep(1000);
+                    semaphore.acquire();
+                    System.out.println(Thread.currentThread().getName() + " acc");
+                    semaphore.release();
+                }
+            }
+        }, "t1");
+
+        Thread t2 = new Thread(new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                while (true){
+                    Thread.sleep(1000);
+                    semaphore.acquire();
+                    System.out.println(Thread.currentThread().getName() + " acc");
+                    semaphore.release();
+                }
+            }
+        },"t2");
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+    }
 }
