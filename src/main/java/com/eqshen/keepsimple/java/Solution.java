@@ -4,21 +4,29 @@ import lombok.SneakyThrows;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Solution {
 
+    /**
+     * age desc
+     */
     private static volatile int age = 1;
 
     public static void main(String[] args) {
 
-        ReentrantLock lock = new ReentrantLock();
-        lock.lock();
-        lock.unlock();
+        String s1 = "abc";
+        String s2 = "kkk";
+        String s3 = "abckkk";
+        String s4 = "abc" + s2;
+        String s5 = "abc" + "kkk";
+        System.out.println(s3 == s4);
+        System.out.println(s3 == s5);
 
-        //=====
-        int[] array = {1,2,4,6,6,6,7,8};
-        System.out.println(bsLeft(array,6));
+        List<Integer> list = new ArrayList<>();
+        list.add(null);
     }
 
     public static int bsLeft(int[] array,int target){

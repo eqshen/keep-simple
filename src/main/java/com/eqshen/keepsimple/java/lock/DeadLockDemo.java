@@ -21,15 +21,16 @@ public class DeadLockDemo extends BaseTest {
      * 一个简单死锁的例子
      * @throws InterruptedException
      */
+    @Test
     public void deadLock() throws InterruptedException {
         Thread th1 = new Thread(() -> {
             try{
                 synchronized (resource1){
-                    log.info("线程 {} 获取锁 resource1 成功",Thread.currentThread().getId());
+                    log.info("线程 {} 获取锁 resource1 成功",Thread.currentThread().getName());
                     Thread.sleep(1000);
 
                     synchronized (resource2){
-                        log.info("线程 {} 获取锁 resource2 成功",Thread.currentThread().getId());
+                        log.info("线程 {} 获取锁 resource2 成功",Thread.currentThread().getName());
                     }
                 }
             }catch (InterruptedException e){
@@ -42,12 +43,12 @@ public class DeadLockDemo extends BaseTest {
         Thread th2 = new Thread(() -> {
             try{
                 synchronized (resource2){
-                    log.info("线程 {} 获取锁 resource2 成功",Thread.currentThread().getId());
+                    log.info("线程 {} 获取锁 resource2 成功",Thread.currentThread().getName());
 
                     Thread.sleep(1000);
 
                     synchronized (resource1){
-                        log.info("线程 {} 获取锁 resource1 成功",Thread.currentThread().getId());
+                        log.info("线程 {} 获取锁 resource1 成功",Thread.currentThread().getName());
                     }
                 }
             }catch (InterruptedException e){
@@ -69,10 +70,6 @@ public class DeadLockDemo extends BaseTest {
         th2.join();
     }
 
-    @Test
-    public void testDeadLock() throws InterruptedException {
-        deadLock();
-    }
 
 
     /**
