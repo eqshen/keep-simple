@@ -1,6 +1,7 @@
 package com.eqshen.keepsimple.java.algorithm;
 
 import com.eqshen.keepsimple.java.BaseTest;
+import com.eqshen.keepsimple.java.algorithm.dto.ListNode;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -9,27 +10,7 @@ import java.util.PriorityQueue;
 
 public class LinkedListRelevant extends BaseTest {
 
-    @Test
-    public void testMergeKlists(){
 
-        ListNode list1 = new ListNode(1);
-        list1.next = new ListNode(5);
-        list1.next.next = new ListNode(7);
-
-        ListNode list2 = new ListNode(2);
-        list2.next = new ListNode(8);
-
-        ListNode[] lists = {list1,list2};
-
-        ListNode resultList = mergeKListsPlus(lists);
-
-        while (resultList != null){
-            System.out.println(resultList.val);
-            resultList = resultList.next;
-        }
-
-
-    }
 
     /**
      * 23。https://leetcode-cn.com/problems/merge-k-sorted-lists/
@@ -107,24 +88,7 @@ public class LinkedListRelevant extends BaseTest {
 
 
 
-    @Test
-    public void testSwapPairs(){
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(2);
-        ListNode node3 = new ListNode(3);
-        ListNode node4 = new ListNode(4);
-        node1.next = node2;
-        node2.next = node3;
-        node3.next = node4;
 
-        ListNode head = swapPairs(node1);
-
-        while (head != null){
-            System.out.print(head.val);
-            System.out.print(" ---> ");
-            head = head.next;
-        }
-    }
 
     public ListNode swapPairs(ListNode head) {
         if(head==null || head.next ==null) return head;
@@ -145,6 +109,43 @@ public class LinkedListRelevant extends BaseTest {
 
         }
         return realHead;
+    }
+
+    public ListNode reverseKGroupCur(ListNode head,int k){
+        if(head == null){
+            return null;
+        }
+        //翻转前k个
+        ListNode a,b;
+        a = b = head;
+        for (int i = 0; i < k; i++) {
+            if(b == null){
+                return head;
+            }
+            b = b.next;
+        }
+        ListNode newHead = reverseBetween(a,b);
+        a.next = reverseKGroupCur(b,k);
+        return newHead;
+    }
+
+    /**
+     * 翻转[a,b)两个节点之间的节点
+     * @param a
+     * @param b
+     * @return
+     */
+    public ListNode reverseBetween(ListNode a,ListNode b){
+        ListNode pre = null;
+        ListNode cur = a;
+        ListNode next = a;
+        while (next != b){
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
     }
 
     /**
@@ -217,20 +218,7 @@ public class LinkedListRelevant extends BaseTest {
         return prePoint;
     }
 
-    @Test
-    public void testReverse(){
-        ListNode list1 = new ListNode(1);
-//        list1.next = new ListNode(5);
-//        list1.next.next = new ListNode(7);
-//        list1.next.next.next = new ListNode(8);
-//        list1.next.next.next.next = new ListNode(9);
 
-        ListNode result = reverseKGroup(list1,2);
-        while (result != null){
-            System.out.println(result.val);
-            result = result.next;
-        }
-    }
 
 
     /**
@@ -270,26 +258,71 @@ public class LinkedListRelevant extends BaseTest {
         return newHead;
     }
 
-    @Test
-    public void testRotateRight(){
-        ListNode list1 = new ListNode(1);
-        list1.next = new ListNode(5);
-        list1.next.next = new ListNode(7);
-        list1.next.next.next = new ListNode(8);
-//        list1.next.next.next.next = new ListNode(9);
-        ListNode result = rotateRight(list1,2);
-        while (result != null){
-            System.out.println(result.val);
-            result = result.next;
+
+
+    /**
+     * 翻转链表的前N个节点
+     * 递归实现
+     * @param head
+     * @param n [1,]
+     * @return
+     */
+    private ListNode successor = null;
+    public ListNode reverseN(ListNode head,int n){
+        //终止条件
+        if(n == 1){
+            successor = head.next;
+            return head;
         }
+        ListNode newHead = reverseN(head.next,n-1);
+        head.next.next = head;
+        head.next = successor;
+        return newHead;
     }
 
-}
+    /**
+     * 翻转[m,n] 部分节点
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
+    public ListNode revertBetween(ListNode head,int m,int n){
 
+        //base case
+        if(m == 1){
+            return reverseN(head,n);
+        }
+        head.next = revertBetween(head.next,m-1,n-1);
+        return head;
+    }
 
+    public void showList(ListNode head){
+        while (head != null){
+            System.out.print(head.val+" -> ");
+            head = head.next;
+        }
+        System.out.println();
+    }
 
-class ListNode {
-     int val;
-     ListNode next;
-     ListNode(int x) { val = x; }
+    /**
+     * 测试链表是否是回文链表
+     * @param head
+     * @return
+     */
+    private ListNode left;
+    public boolean checkLinkPalindrome(ListNode head){
+        left = head;
+        return palindromeHelp(head);
+    }
+
+    public boolean palindromeHelp(ListNode head){
+        if(head == null) return true;
+        boolean subRes = palindromeHelp(head.next);
+        if(!subRes || head.val != left.val){
+            return false;
+        }
+        left = left.next;
+        return true;
+    }
 }

@@ -15,18 +15,11 @@ public class Solution {
      */
     private static volatile int age = 1;
 
+    private static short NO_THING = -1;
+
     public static void main(String[] args) {
 
-        String s1 = "abc";
-        String s2 = "kkk";
-        String s3 = "abckkk";
-        String s4 = "abc" + s2;
-        String s5 = "abc" + "kkk";
-        System.out.println(s3 == s4);
-        System.out.println(s3 == s5);
 
-        List<Integer> list = new ArrayList<>();
-        list.add(null);
     }
 
     public static int bsLeft(int[] array,int target){
