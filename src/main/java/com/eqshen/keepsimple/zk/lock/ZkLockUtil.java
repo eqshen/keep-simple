@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 一个基于Zk的分布式锁
+ * 仅仅是按照自己思路实现，练习而已；生产请使用Curator#InterProcessMutex
  * @author eqshen
  * @description
  * @date 2021/2/7
@@ -160,6 +161,5 @@ public class ZkLockUtil {
         log.info("start ------->");
         zkLockUtil.lockWithBlock(key2,val2);
         log.info("end --------<");
-
     }
 }
