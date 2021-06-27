@@ -1,9 +1,11 @@
 package com.eqshen.keepsimple.java;
 
+import com.eqshen.keepsimple.java.algorithm.dto.ListNode;
 import lombok.SneakyThrows;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -17,10 +19,11 @@ public class Solution {
 
     private static short NO_THING = -1;
 
-    public static void main(String[] args) {
-
-
+    public static void main(String[] args) throws InterruptedException {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("a","1");
     }
+
 
     public static int bsLeft(int[] array,int target){
         int left = 0;

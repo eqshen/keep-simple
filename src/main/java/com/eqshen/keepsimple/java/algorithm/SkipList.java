@@ -18,7 +18,7 @@ public class SkipList<T> {
 
     public static void main(String[] args) {
         SkipList<Integer>list=new SkipList<Integer>();
-        for(int i=1;i<20;i++)
+        for(int i=1;i<4;i++)
         {
             list.add(i,1);
         }
